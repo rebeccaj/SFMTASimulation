@@ -1,7 +1,7 @@
 /** 
 SFMTASimulation.java
-CIS 111B
-Group E: Teddy Deng, Katherine Soohoo,Rebecca A. Johnson
+CS 111B
+Group E: Teddy Deng, Katherine Soohoo, Rebecca A. Johnson
 We assume the csv data files are in the same directory as this file.
 */
 
@@ -593,7 +593,6 @@ class Vehicle {
 
 }
 
-
 class Bus extends Vehicle {
 
     private enum Type {BUS}
@@ -609,7 +608,6 @@ class Bus extends Vehicle {
         vType = Type.BUS;
     }
 }
-
 
 class LRV extends Vehicle {
 
