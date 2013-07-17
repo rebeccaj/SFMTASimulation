@@ -55,7 +55,7 @@ public class SFMTASimulation {
     private void runSimulation() {
         
         initializeStations();
-        initializeVehicles(); //or separate functions to initialize lrvs and buses
+        initializeVehicles();
         initializePassengers();
         initializeDrivers();
         
@@ -136,7 +136,7 @@ public class SFMTASimulation {
     
     private void initializePassengers() {
         //File location into string
-    	String fileNamePassengers = "passengers.csv";
+		String fileNamePassengers = "passengers.csv";
 		
 		//Creating passenger : an Array of Person objects.
 		int totalNumPersonsPassenger = getTotalNumPassengersOrDrivers(fileNamePassengers);	//Getting size of file; this will be size of array of Person objects.
