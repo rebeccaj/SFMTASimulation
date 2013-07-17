@@ -354,7 +354,7 @@ public class SFMTASimulation {
 			String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
 			
 			//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
-			passenger[i] = new Person(tokens[0], tokens[1], tokens[2], "Passenger");
+			passenger[i] = new Person(tokens[0], Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), "Passenger");
 		}
 		
 		inputFile.close();	//Close file when done.
@@ -386,7 +386,7 @@ public class SFMTASimulation {
                 String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
                 
                 //Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
-                driver[i] = new Person(tokens[0], tokens[1], tokens[2], "Driver");
+                driver[i] = new Person(tokens[0], Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), "Driver");
             }
             
             inputFile.close();	//Close file when done.
@@ -1050,20 +1050,24 @@ class LRV extends Vehicle {
 
 class Person {
 
-	private String currentStationID;	//Store string retrieved from vehicle class
-	private String currentVehicleID;	
-	private String startID;				//Initializes when an instance of Person in created
-	private String stopID;
+	private int currentStationID;	//Store string retrieved from vehicle class
+	private int currentVehicleID;	
+	private int startID;				//Initializes when an instance of Person in created
+	private int stopID;
 	private String name;
 	private String personType;			//Later on when we need to transfer/ get off... might need (could use enums, dont know how)
+	private boolean reachedDestination = false;
+	private boolean needToTransfer = false;
+	private boolean amIAtAStation = true;
+	private boolean amIOnAVehicle = false;
 	
 	/**
 	 * No arg constructor
 	 */
 	public Person(){
 
-		startID = null;
-		stopID = null;
+		startID = 0;
+		stopID = 0;
 		String name = null;
 		System.out.println("Error, please enter name of person.");
 	}
@@ -1075,7 +1079,7 @@ class Person {
 	 * @param endPos Assign to Stop ID.
 	 * @param typeOfPerson Assign to personType.
 	 */
-	public Person(String nameTag, String beginPos, String endPos, String typeOfPerson){
+	public Person(String nameTag, int beginPos, int endPos, String typeOfPerson){
 		
 		setStartID(beginPos);
 		setStopID(endPos);
@@ -1083,12 +1087,12 @@ class Person {
 		personType = typeOfPerson;
 	}
 		
-	public void setStartID(String startPos){
+	public void setStartID(int startPos){
 		
 		startID = startPos;
 	}
 	
-	public void setStopID(String endPos){
+	public void setStopID(int endPos){
 		
 		stopID = endPos;
 	}
@@ -1098,12 +1102,12 @@ class Person {
 		name = nameTag;
 	}
 	
-	public String getStartID(){
+	public int getStartID(){
 		
 		return startID;
 	}
 	
-	public String getStopID(){
+	public int getStopID(){
 		
 		return stopID;
 	}
@@ -1113,21 +1117,23 @@ class Person {
 		return name;
 	}
 	
-	public void setCurrentStationID(String stationID){
+	public void setCurrentStationID(int stationID){
 		
 		//Needs to access vehicle class, get station ("location") id.
+		currentStationID = stationID;
 	}
 	
 	public void setCurrentVehicleID(String vehicleID){
 		//Needs to access vehicle class, get vehicle id.
+		currentVehicleID = vehicleID;
 	}
 	
-	public String getCurrentStationID(){
+	public int getCurrentStationID(){
 		
 		return currentStationID;
 	}
 	
-	public String getCurrentVehicleID(){
+	public int getCurrentVehicleID(){
 		
 		return currentVehicleID;
 	}
@@ -1135,6 +1141,12 @@ class Person {
 	public String getPersonType(){
 		
 		return personType;
+	}
+	
+	public void changePersonStatusStationAndVehicle(){
+		
+		amIOnAVehicle = true;
+		amIAtAStation = false;
 	}
 }
 
