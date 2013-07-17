@@ -108,7 +108,7 @@ public class SFMTASimulation {
             
             name = strToken.nextToken();
             stationID = Integer.parseInt(strToken.nextToken());
-            System.out.println(name + " " + stationID);
+            
             /* Now that we have the name of the passenger and place they're waiting, we'll create a new station object or add the passenger to the object containing this station ID, if it already exists.
             */
             arrayIndex = findInArray(stationID);
