@@ -901,12 +901,13 @@ class Vehicle {
     private int stopID;             // The stop ID of where the vehicle is currently located
     private int stopIndex;          // Counter to keep track of stops made
     private Direction vehicleDir;   // Direction of the vehicle
+    private String[][] routeList;            // List of stations where the vehicle stops
     
     private int numOfCoaches;   // Number of coaches for a vehicle
     private int maxCapacity;    // Maximum number of passengers a vehicle can hold
     
-    private ArrayList<String> passengerList; // List of passenger aboard the vehicle
-    private String[][] routeList;            // List of stations where the vehicle stops
+    private ArrayList<Person> passengerList; // List of passenger aboard the vehicle
+    private Person operator;                 // The driver operating the vehicle.
     
     /**
      * No-Arg Constructor
@@ -916,12 +917,13 @@ class Vehicle {
         stopID = 0;
         stopIndex = 0;
         vehicleDir = Direction.INBOUND;
+        routeList = new String[0][0];
         
         numOfCoaches = 0;
         maxCapacity = 0;
         
-        passengerList = new ArrayList<String>(0);
-        routeList = new String[0][0];
+        passengerList = null;
+        operator = null;
     }
     
     /**
@@ -933,12 +935,13 @@ class Vehicle {
         stopID = Integer.parseInt(route[0][1]);
         stopIndex = 0;
         vehicleDir = Direction.INBOUND;
+        routeList = route;
         
         numOfCoaches = generateRandCoachNum();
         maxCapacity = numOfCoaches * 20;
         
-        passengerList = new ArrayList<String>(maxCapacity);
-        routeList = route;
+        passengerList = new ArrayList<Person>(maxCapacity);
+        operator = null; // Needs to be changed to an actual driver later.
     }
     
     /**
@@ -1013,8 +1016,8 @@ class Vehicle {
      * in each element.
      * @return list An array of the passengers' name. 
      */
-    public String[] getPassengerList() {
-        String[] list = new String[passengerList.size()];
+    public Person[] getPassengerList() {
+        Person[] list = new Person[passengerList.size()];
     
         for (int i = 0; i < list.length; i++)
             list[i] = passengerList.get(i);
@@ -1024,22 +1027,22 @@ class Vehicle {
     
     /**
      * The addPassenger methods adds a passenger to the vehicle.
-     * @param name The name of the passenger.
+     * @param passenger A Person object.
      */
-    public void addPassenger(String name) {
+    public void addPassenger(Person passenger) {
         if (getNumOfPassengers() == getMaxCapacity())
             System.out.println("The vehicle is full!");
         else
-            passengerList.add(name);
+            passengerList.add(passenger);
     }
     
     /**
      * The removePassenger method removes a passenger from the vehicle.
-     * @param name The name of the passenger.
+     * @param passenger A Person object.
      */
-    public void removePassenger(String name) {
+    public void removePassenger(Person passenger) {
         for (int i = 0; i < passengerList.size(); i++) {
-            if (name.equals(passengerList.get(i)))
+            if (passenger.getName().equals(passengerList.get(i).getName()))
                 passengerList.remove(i);
             else
                 System.out.println("Passenger does not exist!");
