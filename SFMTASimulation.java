@@ -15,7 +15,13 @@ import java.util.StringTokenizer;
 
 /**
 SFMTASimulation class creates a program to simulate the operation
-of the San Francisco MUNI bus and light rail vehicle system
+of the San Francisco MUNI bus and light rail vehicle system.
+Objects are instantiated to represent vehicles, drivers, passengers, and
+stations. A master control loop scans through the route information to 
+move vehicles to stations, updating object data as it does so, and asking
+objects to update themselves according to the new information, by calling their 
+decision/update methods. The passengers all queue up first thing, and when 
+there are no more passengers waiting at any stations, the program is finished.
 */
 public class SFMTASimulation {
     
