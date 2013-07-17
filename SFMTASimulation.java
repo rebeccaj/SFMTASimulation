@@ -282,12 +282,12 @@ public class SFMTASimulation {
        
     private void initializeVehicles() {
         // Instantiates the initial LRVs and Buses.
-        LRV l8xBayshore = new LRV(v8xBayshoreRoute);
-        LRV l47VanNess = new LRV(v47VanNessRoute);
-        LRV l49Mission = new LRV(v49MissionRoute);
-        Bus LTaraval = new Bus(vLTaravalRoute);
-        Bus NJudah = new Bus(vNJudahRoute);
-        Bus KInglesideTThird = new Bus(vKTRoute);
+        Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
+        Bus l47VanNess = new Bus(v47VanNessRoute, 47);
+        Bus l49Mission = new Bus(v49MissionRoute, 49);
+        LRV LTaraval = new LRV(vLTaravalRoute, 'L');
+        LRV NJudah = new LRV(vNJudahRoute, 'N');
+        LRV KInglesideTThird = new LRV(vKTRoute, 'K');
     }
     
     
@@ -954,32 +954,92 @@ class Vehicle {
 class Bus extends Vehicle {
 
     private enum Type {BUS}
+    private enum RouteName {B47VANNESS, B49MISSION, B8XBAYSHORE}
+    
     Type vType;
+    RouteName vRouteName;
 
+    /**
+     * No-Arg Construtor
+     */
     public Bus() {
         super();
-        vType = Type.BUS;
+        vType = null;
+        vRouteName = null;
     }
     
-    public Bus(String[][] route) {
-        super(route);
+    public Bus(String[][] route, int bNum) {
+        super(route);   // Calls the superclass's constructor
         vType = Type.BUS;
+        
+        if (bNum == 8)
+            vRouteName = RouteName.B8XBAYSHORE;
+        else if (bNum == 47)
+            vRouteName = RouteName.B47VANNESS;
+        else if (bNum == 49)
+            vRouteName = RouteName.B49MISSION;
+    }
+    
+    /**
+     * The getType method returns the type of the vehicle.
+     * @return vType The type of the vehicle.
+     */
+    public Type getType() {
+        return vType;
+    }
+    
+    /**
+     * The getRouteName method returns the name of the route the vehicle is following.
+     * @return vRouteName The name of the route.
+     */
+    public RouteName getRouteName() {
+        return vRouteName;
     }
 }
 
 class LRV extends Vehicle {
 
     private enum Type {LRV}
+    private enum RouteName {KINGELSIDE_TTHIRD, LTARAVAL, NJUDAH}
+    
     Type vType;
+    RouteName vRouteName;
 
+    /**
+     * No-Arg Construtor
+     */
     public LRV() {
         super();
-        vType = Type.LRV;
+        vType = null;
+        vRouteName = null;
     }
     
-    public LRV(String[][] route) {
-        super(route);
+    public LRV(String[][] route, char cName) {
+        super(route);   // Calls the superclass's constructor
         vType = Type.LRV;
+        
+        if (cName == 'K')
+            vRouteName = RouteName.KINGELSIDE_TTHIRD;
+        else if (cName == 'L')
+            vRouteName = RouteName.LTARAVAL;
+        else if (cName == 'N')
+            vRouteName = RouteName.NJUDAH;
+    }
+    
+    /**
+     * The getType method returns the type of the vehicle.
+     * @return vType The type of the vehicle.
+     */
+    public Type getType() {
+        return vType;
+    }
+    
+    /**
+     * The getRouteName method returns the name of the route the vehicle is following.
+     * @return vRouteName The name of the route.
+     */
+    public RouteName getRouteName() {
+        return vRouteName;
     }
 }
 
