@@ -94,13 +94,17 @@ public class SFMTASimulation {
     */
     private void initializeStations() {
         
-        consumePassengersCSV();
-        consumeDriversCSV();
-        consumeRouteCSVs();
+        consumePassengersCSVforStations();
+        consumeDriversCSVforStations();
+        consumeRouteCSVsForStations();
     }
     
     
-    private void consumePassengersCSV() {    
+    /**
+    consumePassengersCSVforStations method reads passengers.csv in order to
+    instantiate station objects.
+    */
+    private void consumePassengersCSVforStations() {    
         //method variable declarations
         String inputStr;
         String name;
@@ -201,11 +205,114 @@ public class SFMTASimulation {
         
         inputFile.close();// close the file when done.
         
-    } // initializeStations method
+    } // consumePassengersCSVforStations()
     
     
-    private void consumeDriversCSV() {    }
-    private void consumeRouteCSVs() {    }
+    private void consumeDriversCSVforStations() {
+        //method variable declarations
+        String inputStr;
+        String name;
+        int stationID;
+        StringTokenizer strToken;
+        int arrayIndex;
+        /* set the following to null to avoid "variable *putFile might not have been initialized" compiler errors.
+        */
+        Scanner inputFile = null;
+        Station thisStation;
+        
+        
+        // First we consume the passengers file. Open it here:
+        try {
+            File file = new File("passengers.csv");
+            inputFile = new Scanner(file);
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File passengers.csv not found.");
+        }
+        // Read until the end of the file.
+        while (inputFile.hasNext())
+        {
+            inputStr = inputFile.nextLine();
+            
+            /* inputStr should look something like this:
+            Isabella,17364,15204
+            Passenger name, origin station ID, destination station ID
+            We want to extract the name and origin to store in a Station object.
+            */
+            strToken = new StringTokenizer(inputStr, ",");
+            
+            name = strToken.nextToken();
+            stationID = Integer.parseInt(strToken.nextToken());
+            
+            /* Now that we have the name of the passenger and place they're waiting, we'll create a new station object or add the passenger to the object containing this station ID, if it already exists.
+            */
+            if (stations.size() == 0) {
+                //this is the first station - go ahead and add it to stations
+                thisStation = new Station(stationID,name);
+                stations.add(thisStation);
+            }
+            else if (stations.size() == 1) {
+                /*
+                findInArray works with at least two array elements. In this 
+                case we just need to know if it's higher or lower than the one
+                */
+                
+                //instantiate Station object
+                thisStation = new Station(stationID,name);
+                
+                //add to before or after current element
+                if (stationID > stations.get(0).getStationID()) {
+                    stations.add(thisStation);
+                }
+                else {
+                    stations.add(0,thisStation);
+                }
+            }
+            else {
+                
+                arrayIndex = findInArray(stationID);
+                
+                if (arrayIndex >= 0) { //there is already an object for this station
+                    // add this passenger to this station's queue
+                    stations.get(arrayIndex).queuePassenger(name); 
+                }
+                else { // new station
+                    // instantiate a new Station object
+                    thisStation = new Station(stationID,name);
+                    
+                    /* now figure out where in array to put it. 
+                    Beginning, end, or where in the middle?
+                    */
+                    if (stationID < stations.get(0).getStationID()) {
+                        // Lowest ID, make it the first array element.
+                        stations.add(0,thisStation);
+                    }
+                    else if (stationID >
+                        stations.get(stations.size()-1).getStationID()) {
+                        // Highest ID, make it the last array element.
+                        stations.add(thisStation);
+                    }
+                    else {
+                        /* find the right spot to put this new Station
+                        in our sorted list
+                        */
+                        
+                        arrayIndex = findSpotInArray(stationID);
+                        
+                        //now store it in array 
+                        stations.add(arrayIndex,thisStation);
+                    
+                    }
+                } // new station
+            } // stations.size() > 0
+        } // scanning through passengers file
+        
+        inputFile.close();// close the file when done.
+        
+    } // consumeDriversCSVforStations()
+    
+    
+    private void consumeRouteCSVsForStations() {    }
     
     /**
     findInArray method searches for a station ID in stations.
