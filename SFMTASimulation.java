@@ -35,6 +35,9 @@ public class SFMTASimulation {
     private String[][] vNJudahRoute = createRouteArray("NJudah.csv");
     private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
     
+    // Creates arrays holding Person objects.
+    private Person[] passengers = createPassengerArray("passengers.csv");
+    private Person[] drivers = createDriverArray("drivers.csv");
     
     /**
     main method instantiates an object of the class and runs the simulation.
@@ -288,59 +291,9 @@ public class SFMTASimulation {
     }
     
     
-    private void initializePassengers() {
-        //File location into string
-	String fileNamePassengers = "passengers.csv";
-	
-	//Creating passenger : an Array of Person objects.
-	int totalNumPersonsPassenger = getTotalNumPassengersOrDrivers(fileNamePassengers);	//Getting size of file; this will be size of array of Person objects.
-	Person[] passenger = new Person[totalNumPersonsPassenger];							//Creating Array of Person object with size.
-	
-	try {
-		Scanner inputFile = new Scanner(new File(fileNamePassengers));
-		
-		for(int i = 0; inputFile.hasNextLine(); i++){
-			
-			String line = inputFile.nextLine();	//Stores line
-			String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
-			
-			//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
-			passenger[i] = new Person(tokens[0], tokens[1], tokens[2], "Passenger");
-		}
-		
-		inputFile.close();	//Close file when done.
-		
-	} catch (FileNotFoundException e) {
-		System.out.println("File not found.");
-	}
-    }
+    private void initializePassengers() {}
     
-    private void initializeDrivers() {
-        //File location into string
-        String fileNameDrivers = "drivers.csv";
-        
-        //Creating driver : an Array of Person objects.
-	int totalNumPersonsDriver = getTotalNumPassengersOrDrivers(fileNameDrivers);	//Getting size of file; this will be size of array of Person objects.
-	Person[] driver = new Person[totalNumPersonsDriver];							//Creating Array of Person object with size.
-	
-	try {
-		Scanner inputFile = new Scanner(new File(fileNameDrivers));
-		
-		for(int i = 0; inputFile.hasNextLine(); i++){
-			
-			String line = inputFile.nextLine();	//Stores line
-			String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
-			
-			//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
-			driver[i] = new Person(tokens[0], tokens[1], tokens[2], "Driver");
-		}
-		
-		inputFile.close();	//Close file when done.
-		
-	} catch (FileNotFoundException e) {
-		System.out.println("File not found.");
-	}
-    }
+    private void initializeDrivers() {}
      
     /**
     printStationPeopleCount method
@@ -376,6 +329,69 @@ public class SFMTASimulation {
         
     }
     
+    /**
+     * The createPassengerArray method creates an array of Person objects using
+     * information from the file.
+     * @param fileNamePassengers The file containing a list of passengers.
+     * @return passenger An array of Person objects.
+     */
+    public static Person[] createPassengerArray(String fileNamePassengers) {
+        //Creating passenger : an Array of Person objects.
+        int totalNumPersonsPassenger = getTotalNumPassengersOrDrivers(fileNamePassengers);	//Getting size of file; this will be size of array of Person objects.
+        Person[] passenger = new Person[totalNumPersonsPassenger];							//Creating Array of Person object with size.
+        
+        try {
+		Scanner inputFile = new Scanner(new File(fileNamePassengers));
+		
+		for(int i = 0; inputFile.hasNextLine(); i++){
+			
+			String line = inputFile.nextLine();	//Stores line
+			String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
+			
+			//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
+			passenger[i] = new Person(tokens[0], tokens[1], tokens[2], "Passenger");
+		}
+		
+		inputFile.close();	//Close file when done.
+		
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        
+        return passenger;
+    }
+    
+    /**
+     * The createDriverArray method creates an array of Person objects using
+     * information from the file.
+     * @param fileNameDrivers The file containing a list of drivers.
+     * @return driver An array of Person objects.
+     */
+    public static Person[] createDriverArray(String fileNameDrivers) {
+        //Creating driver : an Array of Person objects.
+        int totalNumPersonsDriver = getTotalNumPassengersOrDrivers(fileNameDrivers);	//Getting size of file; this will be size of array of Person objects.
+        Person[] driver = new Person[totalNumPersonsDriver];							//Creating Array of Person object with size.
+        
+        try {
+            Scanner inputFile = new Scanner(new File(fileNameDrivers));
+            
+            for(int i = 0; inputFile.hasNextLine(); i++){
+                
+                String line = inputFile.nextLine();	//Stores line
+                String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
+                
+                //Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
+                driver[i] = new Person(tokens[0], tokens[1], tokens[2], "Driver");
+            }
+            
+            inputFile.close();	//Close file when done.
+            
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        
+        return driver;
+    }
     
     /** 
      * The createRouteArray method reads a route file and returns a two-dimensional
