@@ -533,11 +533,12 @@ class Vehicle {
      * @param name The name of the passenger.
      */
     public void removePassenger(String name) {
-        for (int i = 0; i < passengerList.size(); i++)
+        for (int i = 0; i < passengerList.size(); i++) {
             if (name.equals(passengerList.get(i)))
                 passengerList.remove(i);
             else
                 System.out.println("Passenger does not exist!");
+        }
     }
     
     /**
