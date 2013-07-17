@@ -1,6 +1,7 @@
 /** 
 SFMTASimulation.java
 CS 111B
+Due: Wednesday, July 17, 2013, 11:55 PM
 Group E: Teddy Deng, Katherine Soohoo, Rebecca A. Johnson
 We assume the csv data files are in the same directory as this file.
 */
