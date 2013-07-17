@@ -31,12 +31,18 @@ public class SFMTASimulation {
     private String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
     private String[][] v47VanNessRoute = createRouteArray("47VanNess.csv");
     private String[][] v49MissionRoute = createRouteArray("49Mission.csv");
-    private String[][] vKInglesideRoute = createRouteArray("KIngleside.csv");
     private String[][] vLTaravalRoute = createRouteArray("LTaraval.csv");
     private String[][] vNJudah = createRouteArray("NJudah.csv");
-    private String[][] vTThirdRoute = createRouteArray("TThird.csv");
+    private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
+
         
-    private Bus test = new Bus(vLTaravalRoute);
+    // Instantiates the initial LRVs and Buses.
+    LRV l8xBayshore = new LRV(v8xBayshoreRoute);
+    LRV l47VanNess = new LRV(v47VanNessRoute);
+    LRV l49Mission = new LRV(v49MissionRoute);
+    Bus LTaraval = new Bus(vLTaravalRoute);
+    Bus NJudah = new Bus(vNJudahRoute);
+    Bus KInglesideTThird = new Bus(vKTRoute);
     
     
     /**
@@ -217,6 +223,60 @@ public class SFMTASimulation {
         return routeArray;
     }
     
+    /** 
+     * The createRouteArray method reads two route files and returns a two-dimensional
+     * array with the first column holding the route name and the second column
+     * holding the stop ID.
+     * @param fileName The name of the first file.
+     * @param fileName2 The name of the second file.
+     * @return routeArray A two-dimensional array separating the route name
+     *          and stop ID into two columns.
+     */
+    public static String[][] createRouteArray(String fileName, String fileName2) throws IOException {
+        // Calls the getNumOfStops method to determine the number of stops.
+        int numOfStops = getNumOfStops(fileName, fileName2); 
+        
+        int fileOneStopNum = getNumOfStops(fileName);
+        System.out.println(fileOneStopNum);
+        
+        // Creates a two-dimensional array with a length equal to the number of stops.
+        String[][] routeArray = new String[numOfStops][numOfStops];
+        
+        String line;     // Store the line being read
+        String[] tokens; // Stores the tokenized string
+        
+        Scanner inputFile = new Scanner(new File(fileName));
+        Scanner inputFile2 = new Scanner(new File(fileName2));
+        
+        inputFile.nextLine(); // Skips first line
+        
+        for (int i = 0; inputFile.hasNext(); i++) {
+            line = inputFile.nextLine();
+            tokens = line.split(",");
+            
+            routeArray[i][0] = tokens[0]; // Stores the route name
+            routeArray[i][1] = tokens[1]; // Stores the stop ID
+        }
+        
+        inputFile.close();
+        
+        // Adds the stops from the second file to the array.
+        inputFile2.nextLine();
+        inputFile2.nextLine(); // Skips the first two lines
+        
+        for (int i = 0; inputFile2.hasNext(); i++) {
+            line = inputFile2.nextLine();
+            tokens = line.split(",");
+            
+            routeArray[fileOneStopNum + i][0] = tokens[0]; // Stores the route name
+            routeArray[fileOneStopNum + i][1] = tokens[1]; // Stores the stop ID
+        }
+        
+        inputFile2.close();
+        
+        return routeArray;
+    }
+    
     /**
      * The getNumOfStops reads a route file and counts the number of stops.
      * @param fileName The name of the file.
@@ -241,6 +301,41 @@ public class SFMTASimulation {
         }
         
         inputFile.close();
+        
+        return stopCount;
+    }
+    
+    /**
+     * The getNumOfStops reads two route files and counts the number of stops.
+     * @param fileName The name of the file.
+     * @param fileName2 The name of the second file.
+     * @return stopCount The number of stops in the route.
+     */
+    public static int getNumOfStops(String fileName, String fileName2) throws IOException {
+        int stopCount = 0;  // Counter for stops in a route
+        
+        Scanner inputFile = new Scanner(new File(fileName));
+        Scanner inputFile2 = new Scanner(new File(fileName2));
+        
+        inputFile.nextLine(); // Skips the first line
+        
+        while (inputFile.hasNextLine()) {
+            inputFile.nextLine();   // Reads next line in the file
+            stopCount++;            // Adds to the stops counter
+        }
+        
+        inputFile.close();
+        
+        // Reads the number of stops from the second file and adds to counter.
+        inputFile2.nextLine();
+        inputFile2.nextLine(); // Skips the first two lines
+        
+        while (inputFile2.hasNextLine()) {
+            inputFile2.nextLine();   // Reads next line in the file
+            stopCount++;             // Adds to the stops counter
+        }
+        
+        inputFile2.close();
         
         return stopCount;
     }
