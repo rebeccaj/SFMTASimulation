@@ -85,6 +85,7 @@ public class SFMTASimulation {
         /* set the following to null to avoid "variable *putFile might not have been initialized" compiler errors.
         */
         Scanner inputFile = null;
+        Station thisStation;
         
         // Open the passengers file.
         try {
@@ -111,18 +112,171 @@ public class SFMTASimulation {
             
             /* Now that we have the name of the passenger and place they're waiting, we'll create a new station object or add the passenger to the object containing this station ID, if it already exists.
             */
-            arrayIndex = findInArray(stationID);
-            if (arrayIndex >= 0) { //there is already an object for this station
-                // add this passenger to this station's queue
-                stations.get(arrayIndex).queuePassenger(name); 
+            if (stations.size() == 0) {
+                //this is the first station - go ahead and add it to stations
+                thisStation = new Station(stationID,name);
+                stations.add(thisStation);
+            }
+            else if (stations.size() == 1) {
+                /*
+                findInArray works with at least two array elements. In this 
+                case we just need to know if it's higher or lower than the one
+                */
+                
+                //instantiate Station object
+                thisStation = new Station(stationID,name);
+                
+                //add to before or after current element
+                if (stationID > stations.get(0).getStationID()) {
+                    stations.add(thisStation);
+                }
+                else {
+                    stations.add(0,thisStation);
+                }
             }
             else {
                 
-            }
-            
-        }
+                arrayIndex = findInArray(stationID);
+                
+                if (arrayIndex >= 0) { //there is already an object for this station
+                    // add this passenger to this station's queue
+                    stations.get(arrayIndex).queuePassenger(name); 
+                }
+                else { // new station
+                    // instantiate a new Station object
+                    thisStation = new Station(stationID,name);
+                    
+                    /* now figure out where in array to put it. 
+                    Beginning, end, or where in the middle?
+                    */
+                    if (stationID < stations.get(0).getStationID()) {
+                        // Lowest ID, make it the first array element.
+                        stations.add(0,thisStation);
+                    }
+                    else if (stationID >
+                        stations.get(stations.size()-1).getStationID()) {
+                        // Highest ID, make it the last array element.
+                        stations.add(thisStation);
+                    }
+                    else {
+                        /* find the right spot to put this new Station
+                        in our sorted list
+                        */
+                        
+                        arrayIndex = findSpotInArray(stationID);
+                        
+                        //now store it in array 
+                        stations.add(arrayIndex,thisStation);
+                    
+                    }
+                } // new station
+            } // stations.size() > 0
+        } // scanning through input file
         inputFile.close();// close the file when done.
     } // initializeStations method
+    
+    
+    /**
+    findInArray method searches for a station ID in stations.
+    Utilizes binary search algorithm. 
+    @param id the integer station ID
+    @return the array index if found, otherwise -1.
+    */
+    private int findInArray(int id) {
+        // declare and initialize method variables
+        int highestIndex = stations.size()-1;
+        int lowestIndex  = 0;
+        int guessIndex = (highestIndex + lowestIndex ) / 2;
+        int indexToReturn = -1;
+        int guessID;
+        boolean stopChecking = false;
+        
+        // look until we find it or run out of places to look
+        while (!stopChecking && lowestIndex < highestIndex) {
+        
+            /* 
+            Let's do a preliminary check to see if the ID is larger than the 
+            largest unchecked ID in the array or smaller than the smallest
+            unchecked ID in the array. If so, we know that it's not found.
+            */
+            if (id > stations.get(highestIndex).getStationID()  ||
+                id < stations.get( lowestIndex).getStationID() ) {
+                
+                stopChecking = true; 
+            }
+            else {
+                // Store the station ID of our guess in guessID
+                guessID = stations.get(guessIndex).getStationID();
+                
+                if ( guessID == id ) {
+                    indexToReturn = guessIndex;
+                    stopChecking = true;
+                }
+                else if (guessID > id) {
+                    // found ID too high; continue search below the guess index
+                    highestIndex = guessIndex - 1;
+                    guessIndex = (highestIndex + lowestIndex ) / 2;
+                }
+                else {
+                    // found ID too low; continue search above the guess index
+                    lowestIndex = guessIndex + 1;
+                    guessIndex = (highestIndex + lowestIndex ) / 2;
+                }
+                
+                /* We need to do this extra check, so while condition
+                won't skip some cases.*/
+                if (lowestIndex == highestIndex &&
+                    id == stations.get(guessIndex).getStationID()) {
+                    
+                    stopChecking = true;
+                    indexToReturn = guessIndex;
+                }
+                
+            }
+        } // while loop
+            
+        return indexToReturn;
+        
+    } // findInArray method
+    
+    
+    /**
+    findSpotInArray method searches for the spot where we should insert
+    our new station ID into stations. It will be the index of the existing
+    array element whose ID is just lower than our new ID.
+    Utilizes algorithm similar to binary search. 
+    @param newID the integer station ID
+    @return the array index where we want to do the insert.
+    */
+    private int findSpotInArray(int newID) {
+        // declare and initialize method variables
+        int highestIndex = stations.size()-1;
+        int lowestIndex  = 0;
+        int guessIndex = (highestIndex + lowestIndex ) / 2;
+        int guessID;
+        boolean stopChecking = false;
+        
+        
+        // look until we find it or run out of places to look
+        while (!stopChecking && lowestIndex < highestIndex-1) {
+            // Store the station ID of our guess in guessID
+            guessID = stations.get(guessIndex).getStationID();
+            
+            if (guessID > newID) {
+                // found ID too high; continue search below the guess index
+                highestIndex = guessIndex ;
+                guessIndex = (highestIndex + lowestIndex ) / 2;
+            }
+            else {
+                // found ID too low; continue search above the guess index
+                lowestIndex = guessIndex ;
+                guessIndex = (highestIndex + lowestIndex ) / 2;
+            }
+        } // while loop
+            
+        return lowestIndex + 1;
+        
+    } // findSpotInArray method
     
     
     private void initializeVehicles() {}
@@ -134,15 +288,12 @@ public class SFMTASimulation {
     /**
     printStationPeopleCount method
     For each station print out on one line, separated by a comma "," the Stop
-    ID, and the number of people waiting there. Save to StationPeopleCount.txt
+    ID, and the number of passengers waiting. Save to StationPeopleCount.txt
     */
     private void printStationPeopleCount() {
         
         PrintWriter outputFile = null;
         
-        /*
-        Note, this block probably needs to be moved to a different method, to be called after the drivers have also been accounted for. And probably needs to return s.getDriverCount() as well.
-        */
         try {
             outputFile = new PrintWriter("StationPeopleCount.txt");
         }
@@ -166,13 +317,6 @@ public class SFMTASimulation {
     */
     private void printStationDriverCount() {
         
-    }
-    
-    
-    private int findInArray(int id) {
-        
-        
-        return -1;
     }
     
     
