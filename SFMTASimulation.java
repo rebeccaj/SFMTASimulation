@@ -26,8 +26,16 @@ public class SFMTASimulation {
     private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
     private ArrayList<Person>  people   = new ArrayList<Person>(); // or two: drivers and passengers?
     
-    // these 2 lines adopted from Vehicle.java main()
-    private String[][] LTaravalRoute = createRouteArray("LTaraval.csv");
+    // these lines adopted from Vehicle.java main()
+    // Creates a two-dimensional string array for all 7 routes.
+    private String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
+    private String[][] v47VanNessRoute = createRouteArray("47VanNess.csv");
+    private String[][] v49MissionRoute = createRouteArray("49Mission.csv");
+    private String[][] vKInglesideRoute = createRouteArray("KIngleside.csv");
+    private String[][] vLTaravalRoute = createRouteArray("LTaraval.csv");
+    private String[][] vNJudah = createRouteArray("NJudah.csv");
+    private String[][] vTThirdRoute = createRouteArray("TThirdRoute.csv");
+        
     private Bus test = new Bus(LTaravalRoute);
     
     
