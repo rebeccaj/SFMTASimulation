@@ -290,29 +290,29 @@ public class SFMTASimulation {
     
     private void initializePassengers() {
         //File location into string
-		String fileNamePassengers = "passengers.csv";
+	String fileNamePassengers = "passengers.csv";
+	
+	//Creating passenger : an Array of Person objects.
+	int totalNumPersonsPassenger = getTotalNumPassengersOrDrivers(fileNamePassengers);	//Getting size of file; this will be size of array of Person objects.
+	Person[] passenger = new Person[totalNumPersonsPassenger];							//Creating Array of Person object with size.
+	
+	try {
+		Scanner inputFile = new Scanner(new File(fileNamePassengers));
 		
-		//Creating passenger : an Array of Person objects.
-		int totalNumPersonsPassenger = getTotalNumPassengersOrDrivers(fileNamePassengers);	//Getting size of file; this will be size of array of Person objects.
-		Person[] passenger = new Person[totalNumPersonsPassenger];							//Creating Array of Person object with size.
-		
-		try {
-			Scanner inputFile = new Scanner(new File(fileNamePassengers));
+		for(int i = 0; inputFile.hasNextLine(); i++){
 			
-			for(int i = 0; inputFile.hasNextLine(); i++){
-				
-				String line = inputFile.nextLine();	//Stores line
-				String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
-				
-				//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
-				passenger[i] = new Person(tokens[0], tokens[1], tokens[2], "Passenger");
-			}
+			String line = inputFile.nextLine();	//Stores line
+			String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
 			
-			inputFile.close();	//Close file when done.
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
+			//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
+			passenger[i] = new Person(tokens[0], tokens[1], tokens[2], "Passenger");
 		}
+		
+		inputFile.close();	//Close file when done.
+		
+	} catch (FileNotFoundException e) {
+		System.out.println("File not found.");
+	}
     }
     
     private void initializeDrivers() {
@@ -320,26 +320,26 @@ public class SFMTASimulation {
         String fileNameDrivers = "drivers.csv";
         
         //Creating driver : an Array of Person objects.
-		int totalNumPersonsDriver = getTotalNumPassengersOrDrivers(fileNameDrivers);	//Getting size of file; this will be size of array of Person objects.
-		Person[] driver = new Person[totalNumPersonsDriver];							//Creating Array of Person object with size.
+	int totalNumPersonsDriver = getTotalNumPassengersOrDrivers(fileNameDrivers);	//Getting size of file; this will be size of array of Person objects.
+	Person[] driver = new Person[totalNumPersonsDriver];							//Creating Array of Person object with size.
+	
+	try {
+		Scanner inputFile = new Scanner(new File(fileNameDrivers));
 		
-		try {
-			Scanner inputFile = new Scanner(new File(fileNameDrivers));
+		for(int i = 0; inputFile.hasNextLine(); i++){
 			
-			for(int i = 0; inputFile.hasNextLine(); i++){
-				
-				String line = inputFile.nextLine();	//Stores line
-				String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
-				
-				//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
-				driver[i] = new Person(tokens[0], tokens[1], tokens[2], "Driver");
-			}
+			String line = inputFile.nextLine();	//Stores line
+			String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
 			
-			inputFile.close();	//Close file when done.
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
+			//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
+			driver[i] = new Person(tokens[0], tokens[1], tokens[2], "Driver");
 		}
+		
+		inputFile.close();	//Close file when done.
+		
+	} catch (FileNotFoundException e) {
+		System.out.println("File not found.");
+	}
     }
      
     /**
