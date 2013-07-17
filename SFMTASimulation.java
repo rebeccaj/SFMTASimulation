@@ -88,10 +88,19 @@ public class SFMTASimulation {
     Station objects, storing them in an array called stations. This method
     first works on data in passengers.csv, then consumes drivers.csv, then
     looks in all of the route files to see if there are any stations with
-    no passengers or drivers waiting at them. In the end, the stations
-    ArrayList contains a Station object for ever station that exists.
+    no passengers or drivers waiting at them. When this method finishes, the
+    stations ArrayList contains a Station object for every station that exists
+    in the MUNI system.
     */
     private void initializeStations() {
+        
+        consumePassengersCSV();
+        consumeDriversCSV();
+        consumeRouteCSVs();
+    }
+    
+    
+    private void consumePassengersCSV() {    
         //method variable declarations
         String inputStr;
         String name;
@@ -103,7 +112,8 @@ public class SFMTASimulation {
         Scanner inputFile = null;
         Station thisStation;
         
-        // Open the passengers file.
+        
+        // First we consume the passengers file. Open it here:
         try {
             File file = new File("passengers.csv");
             inputFile = new Scanner(file);
@@ -187,10 +197,15 @@ public class SFMTASimulation {
                     }
                 } // new station
             } // stations.size() > 0
-        } // scanning through input file
+        } // scanning through passengers file
+        
         inputFile.close();// close the file when done.
+        
     } // initializeStations method
     
+    
+    private void consumePassengersCSV() {    }
+    private void consumeRouteCSVs() {    }
     
     /**
     findInArray method searches for a station ID in stations.
