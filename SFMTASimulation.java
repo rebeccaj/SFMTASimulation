@@ -34,9 +34,9 @@ public class SFMTASimulation {
     private String[][] vKInglesideRoute = createRouteArray("KIngleside.csv");
     private String[][] vLTaravalRoute = createRouteArray("LTaraval.csv");
     private String[][] vNJudah = createRouteArray("NJudah.csv");
-    private String[][] vTThirdRoute = createRouteArray("TThirdRoute.csv");
+    private String[][] vTThirdRoute = createRouteArray("TThird.csv");
         
-    private Bus test = new Bus(LTaravalRoute);
+    private Bus test = new Bus(vLTaravalRoute);
     
     
     /**
@@ -72,6 +72,8 @@ public class SFMTASimulation {
     
     
     /**
+    initializeStations method consumes our data files and instantiates
+    Station objects, storing them in an array.
     */
     private void initializeStations() {
         //method variable declarations
@@ -80,7 +82,7 @@ public class SFMTASimulation {
         int stationID;
         StringTokenizer strToken;
         int arrayIndex;
-        /* set the following 2 to null to avoid "variable *putFile might not have been initialized" compiler errors.
+        /* set the following to null to avoid "variable *putFile might not have been initialized" compiler errors.
         */
         Scanner inputFile = null;
         
@@ -90,7 +92,7 @@ public class SFMTASimulation {
             inputFile = new Scanner(file);
         }
         catch (FileNotFoundException e) {
-            System.out.println("File not found.");
+            System.out.println("File passengers.csv not found.");
         }
         // Read until the end of the file.
         while (inputFile.hasNext())
@@ -106,7 +108,7 @@ public class SFMTASimulation {
             
             name = strToken.nextToken();
             stationID = Integer.parseInt(strToken.nextToken());
-            
+            System.out.println(name + " " + stationID);
             /* Now that we have the name of the passenger and place they're waiting, we'll create a new station object or add the passenger to the object containing this station ID, if it already exists.
             */
             arrayIndex = findInArray(stationID);
@@ -228,7 +230,7 @@ public class SFMTASimulation {
             inputFile = new Scanner(new File(fileName));
         }
         catch (FileNotFoundException e) {
-            System.out.println("File not found.");
+            System.out.println("File " + fileName + " not found.");
         }
         
         inputFile.nextLine(); // Skips the first line
