@@ -74,7 +74,6 @@ public class SFMTASimulation {
         /* set the following 2 to null to avoid "variable *putFile might not have been initialized" compiler errors.
         */
         Scanner inputFile = null;
-        PrintWriter outputFile = null;
         
         // Open the passengers file.
         try {
@@ -128,6 +127,7 @@ public class SFMTASimulation {
     */
     private void printStationPeopleCount() {
         
+        PrintWriter outputFile = null;
         
         /*
         Note, this block probably needs to be moved to a different method, to be called after the drivers have also been accounted for. And probably needs to return s.getDriverCount() as well.
@@ -592,6 +592,24 @@ class Vehicle {
     }
 
 }
+
+
+class Bus extends Vehicle {
+
+    private enum Type {BUS}
+    Type vType;
+
+    public Bus() {
+        super();
+        vType = Type.BUS;
+    }
+    
+    public Bus(String[][] route) {
+        super(route);
+        vType = Type.BUS;
+    }
+}
+
 
 class LRV extends Vehicle {
 
