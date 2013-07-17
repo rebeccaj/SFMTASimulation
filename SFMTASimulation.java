@@ -51,7 +51,8 @@ public class SFMTASimulation {
         initializeStations();
         initializeVehicles(); //or separate functions to initialize lrvs and buses
         initializePeople(); // or passengers and drivers separately
- 
+        
+        //These two tasks together satisfy task 5
         printStationPeopleCount();
         printStationDriverCount();
         
@@ -61,18 +62,9 @@ public class SFMTASimulation {
     }
     
     
-    private void initializeStations() {}
-    
-    private void initializeVehicles() {}
-    
-    private void initializePeople() {}
-     
     /**
-    printStationPeopleCount method
-    Print a list of station IDs and how many passengers are waiting there.
     */
-    private void printStationPeopleCount() {
-        
+    private void initializeStations() {
         //method variable declarations
         String inputStr;
         String name;
@@ -120,6 +112,22 @@ public class SFMTASimulation {
             
         }
         inputFile.close();// close the file when done.
+    } // initializeStations method
+    
+    
+    private void initializeVehicles() {}
+    
+    
+    private void initializePeople() {}
+    
+     
+    /**
+    printStationPeopleCount method
+    For each station print out on one line, separated by a comma "," the Stop
+    ID, and the number of people waiting there. Save to StationPeopleCount.txt
+    */
+    private void printStationPeopleCount() {
+        
         
         /*
         Note, this block probably needs to be moved to a different method, to be called after the drivers have also been accounted for. And probably needs to return s.getDriverCount() as well.
@@ -141,8 +149,9 @@ public class SFMTASimulation {
     
     /**
     printStationDriverCount method
-    Print a list of origin and terminal station IDs and how many drivers are waiting there.
-    @param stations  ArrayList containing references to Station objects.
+    For each origin or terminal station, print out on one line separated by a
+    comma "," the Stop ID and the number of drivers waiting there.
+    Save to StationDriverCount.txt
     */
     private void printStationDriverCount() {
         
