@@ -1256,7 +1256,7 @@ class Person {
 		currentStationID = stationID;
 	}
 	
-	public void setCurrentVehicleID(String vehicleID){
+	public void setCurrentVehicleID(int vehicleID){
 		//Needs to access vehicle class, get vehicle id.
 		currentVehicleID = vehicleID;
 	}
