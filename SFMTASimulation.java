@@ -85,7 +85,11 @@ public class SFMTASimulation {
     
     /**
     initializeStations method consumes our data files and instantiates
-    Station objects, storing them in an array.
+    Station objects, storing them in an array called stations. This method
+    first works on data in passengers.csv, then consumes drivers.csv, then
+    looks in all of the route files to see if there are any stations with
+    no passengers or drivers waiting at them. In the end, the stations
+    ArrayList contains a Station object for ever station that exists.
     */
     private void initializeStations() {
         //method variable declarations
@@ -190,7 +194,8 @@ public class SFMTASimulation {
     
     /**
     findInArray method searches for a station ID in stations.
-    Utilizes binary search algorithm. 
+    Use this method if you have a station ID you want to find the object for.
+    Utilizes binary search logic. 
     @param id the integer station ID
     @return the array index if found, otherwise -1.
     */
