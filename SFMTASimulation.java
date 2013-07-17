@@ -31,12 +31,9 @@ public class SFMTASimulation {
     private String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
     private String[][] v47VanNessRoute = createRouteArray("47VanNess.csv");
     private String[][] v49MissionRoute = createRouteArray("49Mission.csv");
-    private String[][] vKInglesideRoute = createRouteArray("KIngleside.csv");
     private String[][] vLTaravalRoute = createRouteArray("LTaraval.csv");
-    private String[][] vNJudah = createRouteArray("NJudah.csv");
-    private String[][] vTThirdRoute = createRouteArray("TThird.csv");
-        
-    private Bus test = new Bus(vLTaravalRoute);
+    private String[][] vNJudahRoute = createRouteArray("NJudah.csv");
+    private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
     
     
     /**
@@ -58,8 +55,9 @@ public class SFMTASimulation {
     private void runSimulation() {
         
         initializeStations();
-        initializeVehicles(); //or separate functions to initialize lrvs and buses
-        initializePeople(); // or passengers and drivers separately
+        initializeVehicles();
+        initializePassengers();
+        initializeDrivers();
         
         //These two tasks together satisfy task 5
         printStationPeopleCount();
@@ -278,12 +276,71 @@ public class SFMTASimulation {
         
     } // findSpotInArray method
     
+       
+    private void initializeVehicles() {
+        // Instantiates the initial LRVs and Buses.
+        LRV l8xBayshore = new LRV(v8xBayshoreRoute);
+        LRV l47VanNess = new LRV(v47VanNessRoute);
+        LRV l49Mission = new LRV(v49MissionRoute);
+        Bus LTaraval = new Bus(vLTaravalRoute);
+        Bus NJudah = new Bus(vNJudahRoute);
+        Bus KInglesideTThird = new Bus(vKTRoute);
+    }
     
-    private void initializeVehicles() {}
     
+    private void initializePassengers() {
+        //File location into string
+		String fileNamePassengers = "passengers.csv";
+		
+		//Creating passenger : an Array of Person objects.
+		int totalNumPersonsPassenger = getTotalNumPassengersOrDrivers(fileNamePassengers);	//Getting size of file; this will be size of array of Person objects.
+		Person[] passenger = new Person[totalNumPersonsPassenger];							//Creating Array of Person object with size.
+		
+		try {
+			Scanner inputFile = new Scanner(new File(fileNamePassengers));
+			
+			for(int i = 0; inputFile.hasNextLine(); i++){
+				
+				String line = inputFile.nextLine();	//Stores line
+				String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
+				
+				//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
+				passenger[i] = new Person(tokens[0], tokens[1], tokens[2], "Passenger");
+			}
+			
+			inputFile.close();	//Close file when done.
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
+    }
     
-    private void initializePeople() {}
-    
+    private void initializeDrivers() {
+        //File location into string
+        String fileNameDrivers = "drivers.csv";
+        
+        //Creating driver : an Array of Person objects.
+		int totalNumPersonsDriver = getTotalNumPassengersOrDrivers(fileNameDrivers);	//Getting size of file; this will be size of array of Person objects.
+		Person[] driver = new Person[totalNumPersonsDriver];							//Creating Array of Person object with size.
+		
+		try {
+			Scanner inputFile = new Scanner(new File(fileNameDrivers));
+			
+			for(int i = 0; inputFile.hasNextLine(); i++){
+				
+				String line = inputFile.nextLine();	//Stores line
+				String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
+				
+				//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
+				driver[i] = new Person(tokens[0], tokens[1], tokens[2], "Driver");
+			}
+			
+			inputFile.close();	//Close file when done.
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
+    }
      
     /**
     printStationPeopleCount method
@@ -361,6 +418,67 @@ public class SFMTASimulation {
         return routeArray;
     }
     
+    /** 
+     * The createRouteArray method reads two route files and returns a two-dimensional
+     * array with the first column holding the route name and the second column
+     * holding the stop ID.
+     * @param fileName The name of the first file.
+     * @param fileName2 The name of the second file.
+     * @return routeArray A two-dimensional array separating the route name
+     *          and stop ID into two columns.
+     */
+    public static String[][] createRouteArray(String fileName, String fileName2) {
+        // Calls the getNumOfStops method to determine the number of stops.
+        int numOfStops = getNumOfStops(fileName, fileName2);    
+        
+        int fileOneStopNum = getNumOfStops(fileName);
+        
+        Scanner inputFile = null;
+        Scanner inputFile2 = null;
+        
+        // Creates a two-dimensional array with a length equal to the number of stops.
+        String[][] routeArray = new String[numOfStops][numOfStops];
+        
+        String line;     // Store the line being read
+        String[] tokens; // Stores the tokenized string
+        
+        try {
+            inputFile = new Scanner(new File(fileName));
+            inputFile2 = new Scanner(new File(fileName2));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File(s) not found.");
+        }
+        
+        inputFile.nextLine(); // Skips first line
+        
+        for (int i = 0; inputFile.hasNext(); i++) {
+            line = inputFile.nextLine();
+            tokens = line.split(",");
+            
+            routeArray[i][0] = tokens[0]; // Stores the route name
+            routeArray[i][1] = tokens[1]; // Stores the stop ID
+        }
+        
+        inputFile.close();
+        
+        // Adds the stops from the second file to the array.
+        inputFile2.nextLine();
+        inputFile2.nextLine(); // Skips the first two lines
+        
+        for (int i = 0; inputFile2.hasNext(); i++) {
+            line = inputFile2.nextLine();
+            tokens = line.split(",");
+            
+            routeArray[fileOneStopNum + i][0] = tokens[0]; // Stores the route name
+            routeArray[fileOneStopNum + i][1] = tokens[1]; // Stores the stop ID
+        }
+        
+        inputFile2.close();
+        
+        return routeArray;
+    }
+    
     /**
      * The getNumOfStops reads a route file and counts the number of stops.
      * @param fileName The name of the file.
@@ -388,6 +506,75 @@ public class SFMTASimulation {
         
         return stopCount;
     }
+    
+    /**
+     * The getNumOfStops reads two route files and counts the number of stops.
+     * @param fileName The name of the file.
+     * @param fileName2 The name of the second file.
+     * @return stopCount The number of stops in the route.
+     */
+    public static int getNumOfStops(String fileName, String fileName2) {
+        int stopCount = 0;  // Counter for stops in a route
+        
+        Scanner inputFile = null;
+        Scanner inputFile2 = null;
+        
+        try {
+            inputFile = new Scanner(new File(fileName));
+            inputFile2 = new Scanner(new File(fileName2));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File(s) not found.");
+        }
+        
+        inputFile.nextLine(); // Skips the first line
+        
+        while (inputFile.hasNextLine()) {
+            inputFile.nextLine();   // Reads next line in the file
+            stopCount++;            // Adds to the stops counter
+        }
+        
+        inputFile.close();
+        
+        // Reads the number of stops from the second file and adds to counter.
+        inputFile2.nextLine();
+        inputFile2.nextLine(); // Skips the first two lines
+        
+        while (inputFile2.hasNextLine()) {
+            inputFile2.nextLine();   // Reads next line in the file
+            stopCount++;             // Adds to the stops counter
+        }
+        
+        inputFile2.close();
+        
+        return stopCount;
+    }
+    
+    /**
+	 * Method calculates and returns the number of lines in a file; Num of lines determines how many "people" are present in file.
+	 * @param filename Name of file we will read.
+	 * @return An integer that will influence size of an Array of Person objects
+	 */
+	public static int getTotalNumPassengersOrDrivers(String filename){
+		
+		int personCount = 0;	//Set flag to 0.
+		
+		try {
+			Scanner inputFile = new Scanner(new File(filename));
+			
+			while(inputFile.hasNextLine()){
+				inputFile.nextLine();			//Move to next line.
+				personCount++;
+			}
+			
+			inputFile.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
+		
+		return personCount;	//Return the count
+	}
     
 } // SFMTASimulation
 
@@ -780,4 +967,93 @@ class LRV extends Vehicle {
     }
 }
 
-class Person {}
+class Person {
+
+	private String currentStationID;	//Store string retrieved from vehicle class
+	private String currentVehicleID;	
+	private String startID;				//Initializes when an instance of Person in created
+	private String stopID;
+	private String name;
+	private String personType;			//Later on when we need to transfer/ get off... might need (could use enums, dont know how)
+	
+	/**
+	 * No arg constructor
+	 */
+	public Person(){
+
+		startID = null;
+		stopID = null;
+		String name = null;
+		System.out.println("Error, please enter name of person.");
+	}
+	
+	/**
+	 * Constructor that creates individual person classes.
+	 * @param nameTag Assign to name.
+	 * @param beginPos Assign to start ID.
+	 * @param endPos Assign to Stop ID.
+	 * @param typeOfPerson Assign to personType.
+	 */
+	public Person(String nameTag, String beginPos, String endPos, String typeOfPerson){
+		
+		setStartID(beginPos);
+		setStopID(endPos);
+		setName(nameTag);
+		personType = typeOfPerson;
+	}
+		
+	public void setStartID(String startPos){
+		
+		startID = startPos;
+	}
+	
+	public void setStopID(String endPos){
+		
+		stopID = endPos;
+	}
+	
+	public void setName(String nameTag){
+		
+		name = nameTag;
+	}
+	
+	public String getStartID(){
+		
+		return startID;
+	}
+	
+	public String getStopID(){
+		
+		return stopID;
+	}
+	
+	public String getName(){
+		
+		return name;
+	}
+	
+	public void setCurrentStationID(String stationID){
+		
+		//Needs to access vehicle class, get station ("location") id.
+	}
+	
+	public void setCurrentVehicleID(String vehicleID){
+		//Needs to access vehicle class, get vehicle id.
+	}
+	
+	public String getCurrentStationID(){
+		
+		return currentStationID;
+	}
+	
+	public String getCurrentVehicleID(){
+		
+		return currentVehicleID;
+	}
+	
+	public String getPersonType(){
+		
+		return personType;
+	}
+}
+
