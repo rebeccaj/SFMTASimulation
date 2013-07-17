@@ -204,7 +204,7 @@ public class SFMTASimulation {
     } // initializeStations method
     
     
-    private void consumePassengersCSV() {    }
+    private void consumeDriversCSV() {    }
     private void consumeRouteCSVs() {    }
     
     /**
