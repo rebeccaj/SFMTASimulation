@@ -32,8 +32,8 @@ public class SFMTASimulation {
     private String[][] v47VanNessRoute = createRouteArray("47VanNess.csv");
     private String[][] v49MissionRoute = createRouteArray("49Mission.csv");
     private String[][] vLTaravalRoute = createRouteArray("LTaraval.csv");
-    private String[][] vNJudah = createRouteArray("NJudah.csv");
-    private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
+    private String[][] vNJudahRoute = createRouteArray("NJudah.csv");
+    //private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
 
         
     // Instantiates the initial LRVs and Buses.
@@ -42,7 +42,7 @@ public class SFMTASimulation {
     LRV l49Mission = new LRV(v49MissionRoute);
     Bus LTaraval = new Bus(vLTaravalRoute);
     Bus NJudah = new Bus(vNJudahRoute);
-    Bus KInglesideTThird = new Bus(vKTRoute);
+    //Bus KInglesideTThird = new Bus(vKTRoute);
     
     
     /**
@@ -234,10 +234,12 @@ public class SFMTASimulation {
      */
     public static String[][] createRouteArray(String fileName, String fileName2) throws IOException {
         // Calls the getNumOfStops method to determine the number of stops.
-        int numOfStops = getNumOfStops(fileName, fileName2); 
+        int numOfStops = getNumOfStops(fileName, fileName2);    
         
         int fileOneStopNum = getNumOfStops(fileName);
-        System.out.println(fileOneStopNum);
+        
+        Scanner inputFile = null;
+        Scanner inputFile2 = null;
         
         // Creates a two-dimensional array with a length equal to the number of stops.
         String[][] routeArray = new String[numOfStops][numOfStops];
@@ -245,8 +247,19 @@ public class SFMTASimulation {
         String line;     // Store the line being read
         String[] tokens; // Stores the tokenized string
         
-        Scanner inputFile = new Scanner(new File(fileName));
-        Scanner inputFile2 = new Scanner(new File(fileName2));
+        try {
+            inputFile = new Scanner(new File(fileName));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        
+        try {
+            inputFile2 = new Scanner(new File(fileName2));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
         
         inputFile.nextLine(); // Skips first line
         
@@ -314,8 +327,22 @@ public class SFMTASimulation {
     public static int getNumOfStops(String fileName, String fileName2) throws IOException {
         int stopCount = 0;  // Counter for stops in a route
         
-        Scanner inputFile = new Scanner(new File(fileName));
-        Scanner inputFile2 = new Scanner(new File(fileName2));
+        Scanner inputFile = null;
+        Scanner inputFile2 = null;
+        
+        try {
+            inputFile = new Scanner(new File(fileName));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        
+        try {
+            inputFile2 = new Scanner(new File(fileName2));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
         
         inputFile.nextLine(); // Skips the first line
         
