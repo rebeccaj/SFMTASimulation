@@ -23,7 +23,9 @@ public class SFMTASimulation {
     We create an ArrayList containing all of the stations, ordered by station ID. 
     */
     private ArrayList<Station> stations = new ArrayList<Station>();
-    private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+    private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>(); //Currently empty.
+    
+    // This ArrayList may not be necessary because an array of passengers and drivers is going to be created.
     private ArrayList<Person>  people   = new ArrayList<Person>(); // or two: drivers and passengers?
     
     // these lines adopted from Vehicle.java main()
@@ -59,6 +61,9 @@ public class SFMTASimulation {
         
         initializeStations();
         initializeVehicles();
+        
+        // These two lines may not be necessary because an array of passengers
+        // and drivers were already create.
         initializePassengers();
         initializeDrivers();
         
