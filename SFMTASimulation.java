@@ -34,8 +34,7 @@ public class SFMTASimulation {
     // This ArrayList may not be necessary because an array of passengers and drivers is going to be created.
     private ArrayList<Person>  people   = new ArrayList<Person>(); // or two: drivers and passengers?
     
-    // these lines adopted from Vehicle.java main()
-    // Creates a two-dimensional string array for all 7 routes.
+    // Creates two-dimensional string arrays for all 7 routes.
     private String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
     private String[][] v47VanNessRoute = createRouteArray("47VanNess.csv");
     private String[][] v49MissionRoute = createRouteArray("49Mission.csv");
@@ -127,7 +126,7 @@ public class SFMTASimulation {
              change their location/status to on board that particular vehicle.
              
          next scan through a list of waiting transfer passengers, and call their
-         decision() methods
+         decision() method
          
          Now, for each DRIVER driving a vehicle, run their decision() method, which does all of the following:
          If  they're currently at an origin or terminus, then add one to their
@@ -157,18 +156,27 @@ public class SFMTASimulation {
           Recall that No 
          more than two vehicles traveling in the same direction may be 
          present in a station at any time.  Vehicles approaching an occupied
-          station wait in the order of their arrival.
-         See if the vehicle has changed from inbound to outbound, and do
-         whatever needs to be done with that.
-         See if it's reached a terminus for the first time and so
+          station wait in the order of their arrival. Use Station's
+          getNumberOfVehicles(0) or getNumberOfVehicles(1) to see if it's full,
+          if it is full, then use station queueWaitingOutbound() or
+          queueWaitingInbound() to get in line.
+         Has the vehicle arrived at an origin or terminus? if so, 
+             change enum Direction (a flag which indicates in which direction
+             along the route the vehicle will move)  
+             Print this line:
+             B:Vehicle#:Driver:Direction:RouteName:NumberOfCoaches
+             where B indicates it's a bus, L and LRV
+         See if it's reached a terminus for the FIRST time and so
          Should put a new vehicle  at the origin (which should also make that
          new vehicle's decision() method run, in case there are already 
          two vehicles at the origin)
          Do the K switch to T logic in the decision method.
               
-              repeat! Until no more passengers. Maybe another good reason to 
-              delete passengers from arrays as they reach their final
-              destinations.
+              repeat! Until no more passengers. If we were storing all of
+              the passengers in ArrayLists, we could delete passengers as
+              they reach their destination, then know we're done when the
+              passenger ArrayList(s) is/are empty. But maybe not worth the
+              effort of revamping tons of code. 
         */
         
     }
@@ -960,7 +968,9 @@ public class SFMTASimulation {
     
 } // SFMTASimulation
 
-
+/**
+Station is the blueprint for MUNI station objects.
+*/
 class Station {
     
     private int stationID; // unique station identifier
@@ -968,6 +978,13 @@ class Station {
     private ArrayList<String> transfers; // transferring passengers waiting
     private ArrayList<String> drivers;    // drivers waiting at station
     private boolean isOriginOrTerminus;   
+    /* vehicles currently at station (max 2 in any direction). 
+    numberOfVehicles[0] stores outbound vehicles at station,
+    numberOfVehicles[1] stores inbound vehicles at station
+    */
+    private int[] numberOfVehicles;  
+    private ArrayList<Integer> waitingOutbound; // station was full
+    private ArrayList<Integer> waitingInbound; 
     
     /**
     constructor, no-argument
@@ -980,6 +997,9 @@ class Station {
         transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = false;
+        numberOfVehicles = new int[] {0,0};
+        waitingOutbound = new ArrayList<Integer>();
+        waitingInbound  = new ArrayList<Integer>();
     }
     
     /**
@@ -993,6 +1013,9 @@ class Station {
         transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = false;
+        numberOfVehicles = new int[] {0,0};
+        waitingOutbound = new ArrayList<Integer>();
+        waitingInbound  = new ArrayList<Integer>();
     }
     
     
@@ -1008,6 +1031,9 @@ class Station {
         transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = false;
+        numberOfVehicles = new int[] {0,0};
+        waitingOutbound = new ArrayList<Integer>();
+        waitingInbound  = new ArrayList<Integer>();
         
         passengers.add( p);
     }
@@ -1026,6 +1052,9 @@ class Station {
         transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = true; // drivers wait at origin or terminus
+        numberOfVehicles = new int[] {0,0};
+        waitingOutbound = new ArrayList<Integer>();
+        waitingInbound  = new ArrayList<Integer>();
         
         drivers.add( d);
     }
@@ -1082,6 +1111,39 @@ class Station {
     
     
     /**
+    getNumberOfVehicles method
+    @param inOrOutBound int 1 if inbound, 0 if outbound
+    @return int number of vehicles currently occupying station
+    */
+    public int getNumberOfVehicles(int inOrOutBound) {
+        
+        return numberOfVehicles[inOrOutBound];
+    }
+    
+    
+    /**
+    getFirstWaitingOutbound method
+    @return int ID of the waiting vehicle, in the outbound direction,
+            next in line to make it to station
+    */
+    public int getFirstWaitingOutbound() {
+        
+        return waitingOutbound.get(0);
+    }
+    
+    
+    /**
+    getFirstWaitingInbound method
+    @return int ID of the waiting vehicle, in the inbound direction,
+            next in line to make it to station
+    */
+    public int getFirstWaitingInbound() {
+        
+        return waitingInbound.get(0);
+    }
+    
+    
+    /**
     queuePassenger method
     Called when we have a new passenger waiting at this station.
     @param p String passenger to add to passengers
@@ -1111,6 +1173,30 @@ class Station {
     public void queueDriver(String d) {
         
         drivers.add(d);
+    }
+    
+    
+    /**
+    queueWaitingOutbound method
+    Called when we have a new outbound vehicle waiting to get to this station -
+    it can't because there are already 2 outbound vehicles at station.
+    @param v int Vehicle ID to add to waitingOutbound
+    */
+    public void queueWaitingOutbound(int v) {
+        
+        waitingOutbound.add(v);
+    }
+    
+    
+    /**
+    queueWaitingInbound method
+    Called when we have a new inbound vehicle waiting to get to this station -
+    it can't because there are already 2 inbound vehicles at station.
+    @param v int Vehicle ID to add to waitingInbound
+    */
+    public void queueWaitingInbound(int v) {
+        
+        waitingInbound.add(v);
     }
     
     
@@ -1145,12 +1231,56 @@ class Station {
     
     
     /**
+    popWaitingOutbound method
+    Called when the first outbound waiting vehicle in line has been able to
+    make it to the station - removes them from the waitlist.
+    */
+    public void popWaitingOutbound() {
+        
+        waitingOutbound.remove(0);
+    }
+    
+    
+    /**
+    popWaitingInbound method
+    Called when the first inbound waiting vehicle in line has been able to
+    make it to the station - removes them from the waitlist.
+    */
+    public void popWaitingInbound() {
+        
+        waitingInbound.remove(0);
+    }
+    
+    
+    /**
     setIsOriginOrTerminus method
     @param is - the boolean flag of whether station is origin or terminus
     */
     public void setIsOriginOrTerminus(boolean is) {
         
         isOriginOrTerminus = is;
+    }
+    
+        
+    /**
+    addNumberOfVehicles method
+    @param int inOrOutBound: 0 if outbound, 1 if inbound
+    @param int n: number of vehicles to add
+    */
+    public void addNumberOfVehicles(int inOrOutBound, int n) {
+        
+        numberOfVehicles[inOrOutBound] += n;
+    }
+    
+        
+    /**
+    subtractNumberOfVehicles method
+    @param int inOrOutBound: 0 if outbound, 1 if inbound
+    @param int n: number of vehicles to subtract
+    */
+    public void subtractNumberOfVehicles(int inOrOutBound, int n) {
+        
+        numberOfVehicles[inOrOutBound] -= n;
     }
     
         
