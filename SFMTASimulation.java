@@ -1122,10 +1122,10 @@ class Vehicle {
     public void addPassenger(Person passenger) {
         if (getNumOfPassengers() == getMaxCapacity()) {
             System.out.println("The vehicle is full!");
-            passengerCount++;
         }
         else
             passengerList.add(passenger);
+            passengerCount++;
     }
     
     /**
