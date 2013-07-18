@@ -372,8 +372,101 @@ public class SFMTASimulation {
         
     } // consumeDriversCSVforStations()
     
-    
-    private void consumeRouteCSVsForStations() {    }
+    /**
+    consumeRouteCSVforStations method reads the route csv files in order to
+    instantiate new station objects that do no exist.
+    */
+    private void consumeRouteCSVsForStations() {
+        //method variable declarations
+        String inputStr;
+        String name;
+        int stationID;
+        StringTokenizer strToken;
+        int arrayIndex;
+        /* set the following to null to avoid "variable *putFile might not have been initialized" compiler errors.
+        */
+        Scanner inputFile = null;
+        Station thisStation;
+        
+        // An array containing the file names of all the routes files.
+        String[] routeFiles = { "8xBayshore.csv", "47VanNess.csv", "49Mission.csv",
+                                "KIngleside.csv", "LTaraval.csv", "NJudah.csv", "TThird.csv" };
+        
+        // Loops through all the file names in the array
+        for (int i = 0; i < routeFiles.length; i++) {
+        
+            // First we consume the route file. Open it here:
+            try {
+                File file = new File(routeFiles[i]);
+                inputFile = new Scanner(file);
+            }
+            catch (FileNotFoundException e) {
+                System.out.println("File " + routeFiles[i] + " not found.");
+            }
+            
+            inputFile.nextLine(); // Skips first line in the route file
+            
+            // Read until the end of the file.
+            while (inputFile.hasNext())
+            {
+                inputStr = inputFile.nextLine();
+                
+                /* inputStr should look something like this:
+                West Portal Station, 16740
+                Route name, station ID
+                We want to extract the station ID to store in a Station object.
+                */
+                strToken = new StringTokenizer(inputStr, ",");
+                
+                name = strToken.nextToken();
+                stationID = Integer.parseInt(strToken.nextToken());
+                
+                /* Now that we have station ID, we'll create a new station object if it doesn't already exist.
+                */
+                    
+                arrayIndex = findInArray(stationID);
+                
+                if (arrayIndex >= 0) { //there is already an object for this station
+                    // Do nothing
+                }
+                else { // new station
+                    // instantiate a new Station object
+                    thisStation = new Station(stationID);
+                    
+                    // This line prints to the console everytime a new station is created.
+                    //System.out.println("New station created with no people waiting: " + stationID );
+                    
+                    /* now figure out where in array to put it. 
+                    Beginning, end, or where in the middle?
+                    */
+                    if (stationID < stations.get(0).getStationID()) {
+                        // Lowest ID, make it the first array element.
+                        stations.add(0,thisStation);
+                    }
+                    else if (stationID >
+                        stations.get(stations.size()-1).getStationID()) {
+                        // Highest ID, make it the last array element.
+                        stations.add(thisStation);
+                    }
+                    else {
+                        /* find the right spot to put this new Station
+                        in our sorted list
+                        */
+                        
+                        arrayIndex = findSpotInArray(stationID);
+                        
+                        //now store it in array 
+                        stations.add(arrayIndex,thisStation);
+                    
+                    }
+                } // new station
+            } // scanning through passengers file
+            
+            inputFile.close();// close the file when done.
+        
+        }
+        
+    } // consumeRouteCSVforStations()
     
     /**
     findInArray method searches for a station ID in stations.
