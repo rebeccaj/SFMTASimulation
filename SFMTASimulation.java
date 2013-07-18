@@ -299,9 +299,9 @@ public class SFMTASimulation {
         Station thisStation;
         
         
-        // First we consume the passengers file. Open it here:
+        // First we consume the drivers file. Open it here:
         try {
-            File file = new File("passengers.csv");
+            File file = new File("drivers.csv");
             inputFile = new Scanner(file);
         }
         catch (FileNotFoundException e) {
@@ -313,8 +313,8 @@ public class SFMTASimulation {
             inputStr = inputFile.nextLine();
             
             /* inputStr should look something like this:
-            Isabella,17364,15204
-            Passenger name, origin station ID, destination station ID
+            Mary,13163,0
+            Driver name, origin station ID, destination station ID
             We want to extract the name and origin to store in a Station object.
             */
             strToken = new StringTokenizer(inputStr, ",");
@@ -322,11 +322,11 @@ public class SFMTASimulation {
             name = strToken.nextToken();
             stationID = Integer.parseInt(strToken.nextToken());
             
-            /* Now that we have the name of the passenger and place they're waiting, we'll create a new station object or add the passenger to the object containing this station ID, if it already exists.
+            /* Now that we have the name of the driver and place they're waiting, we'll create a new station object or add the driver to the object containing this station ID, if it already exists.
             */
             if (stations.size() == 0) {
                 //this is the first station - go ahead and add it to stations
-                thisStation = new Station(stationID,name);
+                thisStation = new Station(stationID,name,true);
                 stations.add(thisStation);
             }
             else if (stations.size() == 1) {
@@ -336,7 +336,7 @@ public class SFMTASimulation {
                 */
                 
                 //instantiate Station object
-                thisStation = new Station(stationID,name);
+                thisStation = new Station(stationID,name,true);;
                 
                 //add to before or after current element
                 if (stationID > stations.get(0).getStationID()) {
@@ -351,12 +351,15 @@ public class SFMTASimulation {
                 arrayIndex = findInArray(stationID);
                 
                 if (arrayIndex >= 0) { //there is already an object for this station
-                    // add this passenger to this station's queue
-                    stations.get(arrayIndex).queuePassenger(name); 
+                    // add this driver to this station's queue
+                    stations.get(arrayIndex).queueDriver(name); 
+                    // sets the station to a origin or terminus
+                    if (!stations.get(arrayIndex).getIsOriginOrTerminus())
+                        stations.get(arrayIndex).setIsOriginOrTerminus(true);
                 }
                 else { // new station
                     // instantiate a new Station object
-                    thisStation = new Station(stationID,name);
+                    thisStation = new Station(stationID,name,true);
                     
                     /* now figure out where in array to put it. 
                     Beginning, end, or where in the middle?
