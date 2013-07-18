@@ -67,12 +67,7 @@ public class SFMTASimulation {
         
         initializeStations();
         initializeVehicles();
-        
-        // These two lines may not be necessary because an array of passengers
-        // and drivers were already create.
-        initializePassengers();
-        initializeDrivers();
-        
+                
         //These two tasks together satisfy task 5
         printStationPeopleCount();
         printStationDriverCount();
@@ -638,10 +633,6 @@ public class SFMTASimulation {
 }
     
     
-    private void initializePassengers() {}
-    
-    private void initializeDrivers() {}
-     
     /**
     printStationPeopleCount method
     For each station print out on one line, separated by a comma "," the Stop
