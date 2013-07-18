@@ -76,6 +76,9 @@ public class SFMTASimulation {
     
     private void runSimulation() {
         
+        // Acts as a loading message.
+        System.out.println("Initializing Simulation...");
+        
         initializeStations();
         initializeVehicles();
                 
@@ -84,7 +87,7 @@ public class SFMTASimulation {
         printStationDriverCount();
         
         // Now kick off the movement and action
-        
+        testProgram();
         
         //logic suggestions/ideas/brainstorming:
         /* place one empty vehicle at each route's origin 
@@ -186,6 +189,44 @@ public class SFMTASimulation {
         
     }
     
+    /**
+     * A method to test the working algorithm.
+     * Right now, all the passengers don't have an algorithm to come up with a route plan.
+     * So whenever a vehicle arrives at their startID, they will get on regardless of where it goes.
+     * If the vehicle happens to reach a passenger's stopID, they were lucky to get to their destination and they get off the vehicle.
+     *
+     * This method reads from an ArrayList that contains all of the passengers as Person objects.
+     * When a passenger reaches their destination, they are removed from the list.
+     * This method should read from the Station objects' list of people rather than the way it is now.
+     */
+    private void testProgram() {
+        while (passengersAL.size() > 0) {
+            for (int i = 0; i < vehicles.size() - 1; i++) {
+                vehicles.get(i).goToNextStop();
+                for (int k = 0; k < vehicles.get(i).getPassengerCount(); k++) {
+                    passengersAL.get(k).setCurrentStationID(vehicles.get(i).getStopID());	//Update current location (which station)
+                    if (vehicles.get(i).getStopID() == passengersAL.get(k).getStopID()) {
+                        vehicles.get(i).removePassenger(passengersAL.get(k));
+                        System.out.println(passengersAL.get(k).getName() + " departed " + vehicles.get(i).getIDNumber());
+                        passengersAL.remove(k);
+                    }
+                }
+                for (int j = 0; j < passengersAL.size() - 1; j++) {
+                    //System.out.println("Entered passenger loop");
+                    if (!vehicles.get(i).isFull()) {
+                        //System.out.println("Vehicle is not full");
+                        if (vehicles.get(i).getStopID() == passengersAL.get(j).getStartID()) {
+                            vehicles.get(i).addPassenger(passengersAL.get(j));				//Add passenger to vehicle object
+                            passengersAL.get(j).setCurrentVehicleID(vehicles.get(i).getIDNumber());	//Update vehicle on
+                            System.out.println(passengersAL.get(j).getName() + " boarded " + vehicles.get(i).getIDNumber());
+                        }
+                    }
+                    else
+                        break;
+                }
+            }
+        }
+    }
     
     /**
     initializeStations method consumes our data files and instantiates
@@ -1548,6 +1589,7 @@ class Vehicle {
      * in each element.
      * @return list An array of the passengers' name. 
      */
+    /* Obsolete method
     public Person[] getPassengerList() {
         Person[] list = new Person[passengerList.size()];
     
@@ -1555,7 +1597,7 @@ class Vehicle {
             list[i] = passengerList.get(i);
             
         return list;
-    }
+    }*/
     
     
     /**
@@ -1563,7 +1605,7 @@ class Vehicle {
      * @param passenger A Person object.
      */
     public void addPassenger(Person passenger) {
-        if (getNumOfPassengers() == getMaxCapacity()) {
+        if (getPassengerCount() == getMaxCapacity()) {
             System.out.println("The vehicle is full!");
         }
         else
@@ -1576,14 +1618,8 @@ class Vehicle {
      * @param passenger A Person object.
      */
     public void removePassenger(Person passenger) {
-        for (int i = 0; i < passengerList.size(); i++) {
-            if (passenger.getName().equals(passengerList.get(i).getName())) {
-                passengerList.remove(i);
-                passengerCount--;
-            }
-            else
-                System.out.println("Passenger does not exist!");
-        }
+            passengerList.remove(passenger);
+            passengerCount--;
     }
     
     /**
@@ -1735,16 +1771,16 @@ class LRV extends Vehicle {
 
 class Person {
 
-	private int currentStationID;	//Store string retrieved from vehicle class
-	private int currentVehicleID;	
-	private int startID;				//Initializes when an instance of Person in created
-	private int stopID;
-	private String name;
-	private String personType;			//Later on when we need to transfer/ get off... might need (could use enums, dont know how)
-	private boolean reachedDestination = false;
-	private boolean needToTransfer = false;
-	private boolean amIAtAStation = true;
-	private boolean amIOnAVehicle = false;
+    private int currentStationID;	//Store string retrieved from vehicle class
+    private int currentVehicleID;	
+    private int startID;				//Initializes when an instance of Person in created
+    private int stopID;
+    private String name;
+    private String personType;			//Later on when we need to transfer/ get off... might need (could use enums, dont know how)
+    private boolean reachedDestination = false;
+    private boolean needToTransfer = false;
+    private boolean amIAtAStation = true;
+    private boolean amIOnAVehicle = false;
     private ArrayList<Integer> routePlan;   // Holds the stopIDs of when to get off
     private ArrayList<String> vehiclePlan; // Holds which vehicles to board
 	
@@ -1918,6 +1954,8 @@ class Person {
                 }
             }
         }
+        
+        // Incomplete: doesn't create a route plan for passengers who need to transfer between different routes.
     }
 }
 
