@@ -906,6 +906,8 @@ class Vehicle {
     private int numOfCoaches;   // Number of coaches for a vehicle
     private int maxCapacity;    // Maximum number of passengers a vehicle can hold
     
+    private int passengerCount;
+    private boolean full;
     private ArrayList<Person> passengerList; // List of passenger aboard the vehicle
     private Person operator;                 // The driver operating the vehicle.
     
@@ -922,6 +924,8 @@ class Vehicle {
         numOfCoaches = 0;
         maxCapacity = 0;
         
+        passengerCount = 0;
+        full = false;
         passengerList = null;
         operator = null;
     }
@@ -940,6 +944,8 @@ class Vehicle {
         numOfCoaches = generateRandCoachNum();
         maxCapacity = numOfCoaches * 20;
         
+        passengerCount = 0;
+        full = false;
         passengerList = new ArrayList<Person>(maxCapacity);
         operator = null; // Needs to be changed to an actual driver later.
     }
@@ -1012,6 +1018,14 @@ class Vehicle {
     }
     
     /**
+     * The getPassengerCount method returns the number of passengers in the vehicle.
+     * @return The number of passengers in the vehicle.
+     */
+    public int getPassengerCount() {
+        return passengerCount;
+    }
+    
+    /**
      * The getPassengerList method returns an array of the passengers' name
      * in each element.
      * @return list An array of the passengers' name. 
@@ -1025,13 +1039,16 @@ class Vehicle {
         return list;
     }
     
+    
     /**
      * The addPassenger methods adds a passenger to the vehicle.
      * @param passenger A Person object.
      */
     public void addPassenger(Person passenger) {
-        if (getNumOfPassengers() == getMaxCapacity())
+        if (getNumOfPassengers() == getMaxCapacity()) {
             System.out.println("The vehicle is full!");
+            passengerCount++;
+        }
         else
             passengerList.add(passenger);
     }
@@ -1042,11 +1059,25 @@ class Vehicle {
      */
     public void removePassenger(Person passenger) {
         for (int i = 0; i < passengerList.size(); i++) {
-            if (passenger.getName().equals(passengerList.get(i).getName()))
+            if (passenger.getName().equals(passengerList.get(i).getName())) {
                 passengerList.remove(i);
+                passengerCount--;
+            }
             else
                 System.out.println("Passenger does not exist!");
         }
+    }
+    
+    /**
+     * The isFull method checks if the object has reached its max count for passengers.
+     * @return full A boolean value indicating if the object reaches its max capacity.
+     */
+    public boolean isFull() {
+        if (passengerCount == maxCapacity)
+            full = true;
+        else
+            full = false;
+        return full;
     }
     
     /**
@@ -1083,7 +1114,7 @@ class Vehicle {
     /**
      * The switchDirection method changes the vehicle's direction.
      */
-    public void switchDirection() {
+    private void switchDirection() {
         if (vehicleDir.equals(Direction.INBOUND))
             vehicleDir = Direction.OUTBOUND;
         else if (vehicleDir.equals(Direction.OUTBOUND))
