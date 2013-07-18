@@ -35,12 +35,12 @@ public class SFMTASimulation {
     private ArrayList<Person>  people   = new ArrayList<Person>(); // or two: drivers and passengers?
     
     // Creates two-dimensional string arrays for all 7 routes.
-    private String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
-    private String[][] v47VanNessRoute = createRouteArray("47VanNess.csv");
-    private String[][] v49MissionRoute = createRouteArray("49Mission.csv");
-    private String[][] vLTaravalRoute = createRouteArray("LTaraval.csv");
-    private String[][] vNJudahRoute = createRouteArray("NJudah.csv");
-    private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
+    private static String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
+    private static String[][] v47VanNessRoute = createRouteArray("47VanNess.csv");
+    private static String[][] v49MissionRoute = createRouteArray("49Mission.csv");
+    private static String[][] vLTaravalRoute = createRouteArray("LTaraval.csv");
+    private static String[][] vNJudahRoute = createRouteArray("NJudah.csv");
+    private static String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
     
     // Instantiates the initial LRVs and Buses.
     private Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
@@ -56,6 +56,28 @@ public class SFMTASimulation {
     
     // Instantiates an two-dimensional array holding the transfer stops.
     private String[][] transferStations = initializeTransferStops("TransferStops.csv");
+    
+    /**
+     * The getRouteInfo method allows access to the private route info.
+     * @param rName The name of the route.
+     * @return A two-dimesional array of a route.
+     */
+    public static String[][] getRouteInfo(String rName) {
+        if (rName.equals("8X"))
+            return v8xBayshoreRoute;
+        else if (rName.equals("47"))
+            return v47VanNessRoute;
+        else if (rName.equals("49"))
+            return v49MissionRoute;
+        else if (rName.equals("L"))
+            return vLTaravalRoute;
+        else if (rName.equals("N"))
+            return vNJudahRoute;
+        else if (rName.equals("KT"))
+            return vKTRoute;
+        else
+            return null;
+    }
     
     /**
     main method instantiates an object of the class and runs the simulation.
@@ -1790,5 +1812,61 @@ class Person {
 		amIOnAVehicle = true;
 		amIAtAStation = false;
 	}
+    
+    private void getTransferPlan() {
+        ArrayList<String> matchStartID = new ArrayList<String>();
+        ArrayList<String> matchStopID = new ArrayList<String>();
+        
+        // Searches through all the routes and finds routes that passes through
+        // the object's startID and stopID.
+        for (int i = 0; i < SFMTASimulation.getRouteInfo("8X").length; i++) {
+            if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
+                matchStartID.add("8X");
+            }
+            if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
+                matchStopID.add("8X");
+            }
+        }
+        for (int i = 0; i < SFMTASimulation.getRouteInfo("47").length; i++) {
+            if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
+                matchStartID.add("47");
+            }
+            if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
+                matchStopID.add("47");
+            }
+        }
+        for (int i = 0; i < SFMTASimulation.getRouteInfo("49").length; i++) {
+            if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
+                matchStartID.add("49");
+            }
+            if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
+                matchStopID.add("49");
+            }
+        }
+        for (int i = 0; i < SFMTASimulation.getRouteInfo("L").length; i++) {
+            if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
+                matchStartID.add("L");
+            }
+            if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
+                matchStopID.add("L");
+            }
+        }
+        for (int i = 0; i < SFMTASimulation.getRouteInfo("N").length; i++) {
+            if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("N")[i][1])) {
+                matchStartID.add("N");
+            }
+            if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("N")[i][1])) {
+                matchStopID.add("N");
+            }
+        }
+        for (int i = 0; i < SFMTASimulation.getRouteInfo("KT").length; i++) {
+            if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("KT")[i][1])) {
+                matchStartID.add("KT");
+            }
+            if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("KT")[i][1])) {
+                matchStopID.add("KT");
+            }
+        }
+    }
 }
 
