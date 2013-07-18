@@ -29,7 +29,7 @@ public class SFMTASimulation {
     We create an ArrayList containing all of the stations, ordered by station ID. 
     */
     private ArrayList<Station> stations = new ArrayList<Station>();
-    private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>(); //Currently empty.
+    private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
     
     // This ArrayList may not be necessary because an array of passengers and drivers is going to be created.
     private ArrayList<Person>  people   = new ArrayList<Person>(); // or two: drivers and passengers?
@@ -77,6 +77,7 @@ public class SFMTASimulation {
     private void runSimulation() {
         
         initializeStations();
+        initializeVehicles();
                 
         //These two tasks together satisfy task 5
         printStationPeopleCount();
@@ -586,6 +587,18 @@ public class SFMTASimulation {
         return lowestIndex + 1;
         
     } // findSpotInArray method
+    
+    /**
+     * The initializeVehicles method adds the initial vehicles to the vehicle ArrayList.
+     */
+    private void initializeVehicles() {
+        vehicles.add(l8xBayshore);
+        vehicles.add(l47VanNess);
+        vehicles.add(l49Mission);
+        vehicles.add(LTaraval);
+        vehicles.add(NJudah);
+        vehicles.add(KInglesideTThird);
+    }
     
     /**
      * This launchVehicle method accepts a vehicle Object as an argument and moves the vehicle to the next station
