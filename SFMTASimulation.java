@@ -588,11 +588,11 @@ public class SFMTASimulation {
 	//or in other words, use getTotalNumPassengersOrDrivers()...
 	for(int i = 0; i < getTotalNumPassengersOrDrivers("passengers.csv"); i++){
 	
-		//Makes sure vehicle doesn't exceed it's passenger limitations.
-		while(vehicleName.getPassengerCount() <= vehicleName.getMaxCapacity()){
+		// j is used as an index for our passenger array object.
+		for(int j = 0; j < getTotalNumPassengersOrDrivers("passengers.csv"); j++){
 				
-			// j is used as an index for our passenger array object.
-			for(int j = 0; j < getTotalNumPassengersOrDrivers("passengers.csv"); j++){
+			//Makes sure vehicle doesn't exceed it's passenger limitations.
+			while(vehicleName.getPassengerCount() <= vehicleName.getMaxCapacity()){
 				
 				//Checks the vehicles current location with the passengers ID. If they match,
 				if(vehicleName.getStopID() == passengers[j].getStartID()){
@@ -616,17 +616,22 @@ public class SFMTASimulation {
 				}
 			}//Once max capacity of vehicle has been filled, the vehicle goes to the next Station.
 	
-			vehicleName.goToNextStop();	//Sends vehicles to the next station.
+			//This if-statement ensures that the j-loop will continue to add passengers until the maximum is reached.
+			//Once the coach(es) are full, only then will the vehicle move to the next stop.
+			if(vehicleName.getPassengerCount() == vehicleName.getMaxCapacity()){
+				
+				vehicleName.goToNextStop();	//Sends vehicles to the next station.
 	
-			int stationArrayIndex = findInArray(vehicleName.getStopID());
+				int stationArrayIndex = findInArray(vehicleName.getStopID());
 
-			passengers[j].setCurrentStationID(vehicleName.getStopID());
-			passengers[j].setCurrentVehicleID(vehicleName.getIDNumber());
+				passengers[j].setCurrentStationID(vehicleName.getStopID());
+				passengers[j].setCurrentVehicleID(vehicleName.getIDNumber());
 
-			if(passengers[j].decisionGetOffVehicle()) {
+				if(passengers[j].decisionGetOffVehicle()) {
 			
-				vehicleName.removePassenger(passengers[j]);
+					vehicleName.removePassenger(passengers[j]);
 		
+				}
 			}
 		}
 	}
