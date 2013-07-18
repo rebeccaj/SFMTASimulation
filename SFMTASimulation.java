@@ -29,7 +29,7 @@ public class SFMTASimulation {
     We create an ArrayList containing all of the stations, ordered by station ID. 
     */
     private ArrayList<Station> stations = new ArrayList<Station>();
-    private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>(); //Currently empty.
+    private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
     
     // This ArrayList may not be necessary because an array of passengers and drivers is going to be created.
     private ArrayList<Person>  people   = new ArrayList<Person>(); // or two: drivers and passengers?
@@ -43,16 +43,19 @@ public class SFMTASimulation {
     private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
     
     // Instantiates the initial LRVs and Buses.
-    Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
-    Bus l47VanNess = new Bus(v47VanNessRoute, 47);
-    Bus l49Mission = new Bus(v49MissionRoute, 49);
-    LRV LTaraval = new LRV(vLTaravalRoute, 'L');
-    LRV NJudah = new LRV(vNJudahRoute, 'N');
-    LRV KInglesideTThird = new LRV(vKTRoute, 'K');
+    private Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
+    private Bus l47VanNess = new Bus(v47VanNessRoute, 47);
+    private Bus l49Mission = new Bus(v49MissionRoute, 49);
+    private LRV LTaraval = new LRV(vLTaravalRoute, 'L');
+    private LRV NJudah = new LRV(vNJudahRoute, 'N');
+    private LRV KInglesideTThird = new LRV(vKTRoute, 'K');
     
     // Creates arrays holding Person objects.
     private Person[] passengers = createPassengerArray("passengers.csv");
     private Person[] drivers = createDriverArray("drivers.csv");
+    
+    // Instantiates an two-dimensional array holding the transfer stops.
+    private String[][] transferStations = initializeTransferStops("TransferStops.csv");
     
     /**
     main method instantiates an object of the class and runs the simulation.
@@ -73,6 +76,7 @@ public class SFMTASimulation {
     private void runSimulation() {
         
         initializeStations();
+        initializeVehicles();
                 
         //These two tasks together satisfy task 5
         printStationPeopleCount();
@@ -593,6 +597,18 @@ public class SFMTASimulation {
     } // findSpotInArray method
     
     /**
+     * The initializeVehicles method adds the initial vehicles to the vehicle ArrayList.
+     */
+    private void initializeVehicles() {
+        vehicles.add(l8xBayshore);
+        vehicles.add(l47VanNess);
+        vehicles.add(l49Mission);
+        vehicles.add(LTaraval);
+        vehicles.add(NJudah);
+        vehicles.add(KInglesideTThird);
+    }
+    
+    /**
      * This launchVehicle method accepts a vehicle Object as an argument and moves the vehicle to the next station
      * @param VehicleName A Vehicle object that has already been instantiated (i.e. 18xBayshore, or NJudah)
      */
@@ -965,6 +981,60 @@ public class SFMTASimulation {
 		
 		return personCount;	//Return the count
 	}
+	
+    /**
+     * The initializeTransferStops methods returns a two-dimensional array
+     * containing information about transfer stops.
+     * @param fileName The name of the file.
+     * @return transferStop A two-dimensional array holding the...
+     *         Bus Stop ID, LRV Stop ID, Stop Name, Bus Routes
+     */
+    public static String[][] initializeTransferStops(String fileName) {
+        int stopCounter = 0;
+        try{
+            Scanner inputFile = new Scanner(new File(fileName));
+
+            inputFile.nextLine();		//Skips first line of descriptions.
+
+            while(inputFile.hasNextLine()){
+
+                inputFile.nextLine();
+            
+                stopCounter++;
+            }
+        }
+        catch(FileNotFoundException e){
+            System.out.println("File not found.");
+        }
+
+        final int TOTAL_TRANSFER_STOPS = stopCounter;
+
+        String[][] transferStop = new String[TOTAL_TRANSFER_STOPS][TOTAL_TRANSFER_STOPS];
+
+        try{
+            
+            Scanner inputFile = new Scanner(new File(fileName));
+
+            inputFile.nextLine(); 		//Skips the first line.
+
+            for(int i = 0; inputFile.hasNextLine(); i++){
+
+                String line = inputFile.nextLine();
+
+                String[] tokens = line.split(",");
+
+                transferStop[i][0] = tokens[0]; 	//Bus Stop ID
+                transferStop[i][1] = tokens[1];		//LRV Stop ID
+                transferStop[i][2] = tokens[2];		//Stop Name/ Description
+                transferStop[i][3] = tokens[3];		//Bus routes 
+            }
+        }
+        catch(FileNotFoundException e){
+            System.out.println("File not found.");
+        }
+
+        return transferStop;	
+    }
     
 } // SFMTASimulation
 
