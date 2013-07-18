@@ -1713,6 +1713,8 @@ class Person {
 	private boolean needToTransfer = false;
 	private boolean amIAtAStation = true;
 	private boolean amIOnAVehicle = false;
+    private ArrayList<Integer> routePlan;   // Holds the stopIDs of when to get off
+    private ArrayList<String> vehiclePlan; // Holds which vehicles to board
 	
 	/**
 	 * No arg constructor
@@ -1738,6 +1740,10 @@ class Person {
 		setStopID(endPos);
 		setName(nameTag);
 		personType = typeOfPerson;
+        routePlan = new ArrayList<Integer>();
+        vehiclePlan = new ArrayList<String>();
+        createRoutePlan(); // Calls a method to fill routePlan with data
+        
 	}
 	
 	public boolean decisionGetOffVehicle(){
@@ -1813,58 +1819,71 @@ class Person {
 		amIAtAStation = false;
 	}
     
-    private void getTransferPlan() {
-        ArrayList<String> matchStartID = new ArrayList<String>();
-        ArrayList<String> matchStopID = new ArrayList<String>();
+    private void createRoutePlan() {
+        ArrayList<String> startVehicle = new ArrayList<String>();
+        ArrayList<String> stopVehicle = new ArrayList<String>();
         
         // Searches through all the routes and finds routes that passes through
         // the object's startID and stopID.
         for (int i = 0; i < SFMTASimulation.getRouteInfo("8X").length; i++) {
             if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
-                matchStartID.add("8X");
+                startVehicle.add("8X");
             }
             if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
-                matchStopID.add("8X");
+                stopVehicle.add("8X");
             }
         }
         for (int i = 0; i < SFMTASimulation.getRouteInfo("47").length; i++) {
             if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
-                matchStartID.add("47");
+                startVehicle.add("47");
             }
             if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
-                matchStopID.add("47");
+                stopVehicle.add("47");
             }
         }
         for (int i = 0; i < SFMTASimulation.getRouteInfo("49").length; i++) {
             if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
-                matchStartID.add("49");
+                startVehicle.add("49");
             }
             if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
-                matchStopID.add("49");
+                stopVehicle.add("49");
             }
         }
         for (int i = 0; i < SFMTASimulation.getRouteInfo("L").length; i++) {
             if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
-                matchStartID.add("L");
+                startVehicle.add("L");
             }
             if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
-                matchStopID.add("L");
+                stopVehicle.add("L");
             }
         }
         for (int i = 0; i < SFMTASimulation.getRouteInfo("N").length; i++) {
             if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("N")[i][1])) {
-                matchStartID.add("N");
+                startVehicle.add("N");
             }
             if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("N")[i][1])) {
-                matchStopID.add("N");
+                stopVehicle.add("N");
             }
         }
         for (int i = 0; i < SFMTASimulation.getRouteInfo("KT").length; i++) {
             if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("KT")[i][1])) {
-                matchStartID.add("KT");
+                startVehicle.add("KT");
             }
             if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("KT")[i][1])) {
-                matchStopID.add("KT");
+                stopVehicle.add("KT");
+            }
+        }
+        
+        // Compares the list of routes that contain the passenger's startID and stopID.
+        // This loop checks if the startID and the stopID are in the same route.
+        // If there are, no tranfers are needed.
+        for (int i = 0; i < startVehicle.size(); i++) {
+            for (int j = 0; j < stopVehicle.size(); j++) {
+                if (startVehicle.get(i).equals(stopVehicle.get(j))) {
+                    routePlan.add(stopID);
+                    vehiclePlan.add(stopVehicle.get(j));
+                    return; // exit methods
+                }
             }
         }
     }
