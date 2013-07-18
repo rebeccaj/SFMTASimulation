@@ -1222,6 +1222,17 @@ class Person {
 		setName(nameTag);
 		personType = typeOfPerson;
 	}
+	
+	public boolean decisionGetOffVehicle(){
+		
+		boolean getOff = false;
+		
+		if(getStopID() == getCurrentStationID()){
+			getOff = true;
+		}
+		
+		return getOff;
+	}
 		
 	public void setStartID(int startPos){
 		
