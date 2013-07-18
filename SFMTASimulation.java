@@ -198,11 +198,15 @@ public class SFMTASimulation {
      * This method reads from an ArrayList that contains all of the passengers as Person objects.
      * When a passenger reaches their destination, they are removed from the list.
      * This method should read from the Station objects' list of people rather than the way it is now.
+     *
+     * This method currently prints every time a passenger boards or leaves a vehicle.
      */
     private void testProgram() {
         while (passengersAL.size() > 0) {
             for (int i = 0; i < vehicles.size() - 1; i++) {
                 vehicles.get(i).goToNextStop();
+                
+                // Removes passengers if they've reached their destination.
                 for (int k = 0; k < vehicles.get(i).getPassengerCount(); k++) {
                     passengersAL.get(k).setCurrentStationID(vehicles.get(i).getStopID());	//Update current location (which station)
                     if (vehicles.get(i).getStopID() == passengersAL.get(k).getStopID()) {
@@ -211,6 +215,8 @@ public class SFMTASimulation {
                         passengersAL.remove(k);
                     }
                 }
+                
+                // Adds passengers if the vehicle arrived at their startID and there is space.
                 for (int j = 0; j < passengersAL.size() - 1; j++) {
                     //System.out.println("Entered passenger loop");
                     if (!vehicles.get(i).isFull()) {
