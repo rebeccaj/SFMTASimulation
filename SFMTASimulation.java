@@ -91,13 +91,14 @@ public class SFMTASimulation {
            call the passenger's decision method, which:
            = Determines whether s/he has arrived at their next stop. That will
             probably involve looking at their instance var that stores which
-            vehicle object they are in, and calling that vehicle's getStopID()
+            vehicle object they are in, and calling that vehicle's getStopID(),
+            to compare it to the passenger's itinerary
            
             +If so and it is the final destination, s/he should:
              - call the vehicle's removePassenger method
              - destroy
                 the passenger object by removign it from the array it was in.
-            +If so and it is a transfer stop, passenger should:
+            +If so and it is a transfer stop (from the passsenger's perspective, because it's not their final destination), passenger should:
              - call the vehicle's removePassenger method
              - update their status/location to the station (which may be a 
                different station ID, from TransferStops.csv), rather than on
@@ -118,25 +119,35 @@ public class SFMTASimulation {
              call the vehicle's addPassenger() 
              change their location/status to on board that particular vehicle.
              
-         next scan through a list of waiting transfer passengers, IF we end
-         up using that "transfers" segregation logic, and call their
+         next scan through a list of waiting transfer passengers, and call their
          decision() methods
          
-         Now, for each DRIVER driving a vehicle, run their decision() method.
-         If  they're currently at an origin or terminus, then see if it is
+         Now, for each DRIVER driving a vehicle, run their decision() method, which does all of the following:
+         If  they're currently at an origin or terminus, then add one to their
+         instance variable that stores how many trips they've made so far.
+         then see if it is
          their seventh trip. If so, remove them from their vehicle by
-         calling some vehicle method, then run queueDriver() for the station,
-         and change driver status/location to the vehicle ID
+         calling some vehicle method (removeDriver()?),
+         a  vehicle setter method to change the vehicle's instance variable 
+         operator to empty or some flag that means there is no driver 
+         then run queueDriver() for the station,
+         and change driver status/location to no vehicle ID
+         Note again that it is decision() that does all that, not the
+          controlling loop
          
-         next for each driver waiting at a stop, run their decision() method:
+         next for each driver waiting at a stop, run their decision() method,
+         which does all of the following:
          if there is a driverless vehicle at the stop, get on board by calling
-         vehicle methods, call the station's popDriver(), and change
-         driver status/location to not have a vehicle ID anymore.
+         vehicle methods to set vehicle's operator instance variable,
+          call the station's popDriver(), and change
+         driver status/location to have that vehicle ID .
+         set driver trip number to 0
          
          Now we have moved all passengers and drivers, as well as
          updated all station and vehicle objects' info. 
          
-         So move every vehicle forward one stop. This is where we run the vehicle's decision() method. Recall that No 
+         So move every vehicle forward one stop. This is where we run the vehicle's decision() method, which handles the logic:
+          Recall that No 
          more than two vehicles traveling in the same direction may be 
          present in a station at any time.  Vehicles approaching an occupied
           station wait in the order of their arrival.
