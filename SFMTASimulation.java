@@ -1590,7 +1590,7 @@ class Vehicle {
 class Bus extends Vehicle {
 
     private enum Type {BUS}
-    private enum RouteName {B47VANNESS, B49MISSION, B8XBAYSHORE}
+    private enum RouteName {B47, B49, B8X}
     
     Type vType;
     RouteName vRouteName;
@@ -1609,11 +1609,11 @@ class Bus extends Vehicle {
         vType = Type.BUS;
         
         if (bNum == 8)
-            vRouteName = RouteName.B8XBAYSHORE;
+            vRouteName = RouteName.B8X;
         else if (bNum == 47)
-            vRouteName = RouteName.B47VANNESS;
+            vRouteName = RouteName.B47;
         else if (bNum == 49)
-            vRouteName = RouteName.B49MISSION;
+            vRouteName = RouteName.B49;
     }
     
     /**
@@ -1636,7 +1636,7 @@ class Bus extends Vehicle {
 class LRV extends Vehicle {
 
     private enum Type {LRV}
-    private enum RouteName {KINGELSIDE_TTHIRD, LTARAVAL, NJUDAH}
+    private enum RouteName {KT, L, N}
     
     Type vType;
     RouteName vRouteName;
@@ -1655,11 +1655,11 @@ class LRV extends Vehicle {
         vType = Type.LRV;
         
         if (cName == 'K')
-            vRouteName = RouteName.KINGELSIDE_TTHIRD;
+            vRouteName = RouteName.KT;
         else if (cName == 'L')
-            vRouteName = RouteName.LTARAVAL;
+            vRouteName = RouteName.L;
         else if (cName == 'N')
-            vRouteName = RouteName.NJUDAH;
+            vRouteName = RouteName.N;
     }
     
     /**
