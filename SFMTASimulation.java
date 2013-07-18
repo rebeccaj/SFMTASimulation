@@ -593,16 +593,27 @@ public class SFMTASimulation {
 	//or in other words, use getTotalNumPassengersOrDrivers()...
 	for(int i = 0; i < getTotalNumPassengersOrDrivers("passengers.csv"); i++){
 	
+		// j is used as an index for our passenger array object.
 		for(int j = 0; j < getTotalNumPassengersOrDrivers("passengers.csv"); j++){
 		
+			//Makes sure vehicle doesn't exceed it's passenger limitations.
 			while(vehicleName.getPassengerCount() <= vehicleName.getMaxCapacity()){
+				
+				//Checks the vehicles current location with the passengers ID. If they match,
 				if(vehicleName.getStopID() == passenger[j].getStartID()){
 			
-					passenger[j].setCurrentLocationID(vehicleName.getStopID());
-					passenger[j].setCurrentVehicleID(vehicleName.getIDNumber());
-					vehicleName.addPassenger(passenger[j]);
+					passenger[j].setCurrentLocationID(vehicleName.getStopID());	//Update current location (which station)
+					passenger[j].setCurrentVehicleID(vehicleName.getIDNumber());	//Update vehicle on
+					vehicleName.addPassenger(passenger[j]);				//Add passenger to vehicle object
 
-
+					//Once the user gets onto the vehicle, he will be headed towards his destination.
+					//We no longer need the start ID (unless its a transfer? not sure about that yet)
+					//So we assign aa "unused" station ID that does not exist, to prevent the passenger
+					// object from ever boarding again.
+					int delete = 0;
+					passenger[j].setStartID(delete);
+					
+					//Finding the station index where station exists
 					int stationArrayIndex = findInArray(vehicleName.getStopID());
 	
 					stations.get(stationArrayIndex).popPassenger();
