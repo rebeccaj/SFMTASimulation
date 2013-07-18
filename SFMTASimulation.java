@@ -588,47 +588,39 @@ public class SFMTASimulation {
      */
     public static void launchVehicle(Vehicle vehicleName){
 
-	int passengersGoneIntoVehicle = 0	//Need to know how much passengers we have cycled through
-						//To be able to go back to the passengers inside the vehicle
-						//at the next station in order to update and check their currentLocationID.
 
 	//Vehicle-move actions. We also need to check all passenger ID's, so the upper-limit of should be the total number of passengers,
 	//or in other words, use getTotalNumPassengersOrDrivers()...
 	for(int i = 0; i < getTotalNumPassengersOrDrivers("passengers.csv"); i++){
 	
-		if(vehicleName.getStopID() == passenger[i].getStartID()){
+		for(int j = 0; j < getTotalNumPassengersOrDrivers("passengers.csv"); j++){
+		
+			while(vehicleName.getPassengerCount() <= vehicleName.getMaxCapacity()){
+				if(vehicleName.getStopID() == passenger[j].getStartID()){
 			
-			for(int i = passengersGoneIntoVehicle ; i < vehicleName.getMaxCapacity; i++){	
-				//vehicleName.getMaxCapacity as the max limit because we don't want to exceed vehicle's passenger limit.
-	
-				passenger[i].setCurrentLocationID(vehicleName.getStopID());
-				passenger[i].setCurrentVehicleID(vehicleName.getIDNumber());
-				vehicleName.addPassenger(passenger[i]);
+					passenger[j].setCurrentLocationID(vehicleName.getStopID());
+					passenger[j].setCurrentVehicleID(vehicleName.getIDNumber());
+					vehicleName.addPassenger(passenger[j]);
 
 
-				int stationArrayIndex = findInArray(vehicleName.getStopID());
+					int stationArrayIndex = findInArray(vehicleName.getStopID());
 	
-				stations.get(stationArrayIndex).popPassenger();
+					stations.get(stationArrayIndex).popPassenger();
 				
-
-				passengersGoneIntoVehicle++;
-
-			}
-		}
+				}
+			}//Once max capacity of vehicle has been filled, the vehicle goes to the next Station.
 	
-		vehicleName.goToNextStop();
+			vehicleName.goToNextStop();	//Sends vehicles to the next station.
 	
-		for(int i = passengersGoneIntoVehicle; i > vehicleName.getMaxCapacity; i--){
-
 			int stationArrayIndex = findInArray(vehicleName.getStopID());
 
-			passenger[i].setCurrentLocationID(vehicleName.getStopID());
-			passenger[i].setCurrentVehicleID(vehicleName.getIDNumber());
+			passenger[j].setCurrentLocationID(vehicleName.getStopID());
+			passenger[j].setCurrentVehicleID(vehicleName.getIDNumber());
 
-			if(passenger[i].decisionGetOffVehicle(vehicleName.getStopID())){
+			if(passenger[j].decisionGetOffVehicle(vehicleName.getStopID())){
 			
-				vehicleName.removePassenger(passenger[i]);	
-			
+				vehicleName.removePassenger(passenger[j]);
+		
 			}
 		}
 	}
