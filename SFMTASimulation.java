@@ -286,6 +286,10 @@ public class SFMTASimulation {
     } // consumePassengersCSVforStations()
     
     
+    /**
+    consumeDriversCSVforStations method reads drivers.csv in order to
+    instantiate new and update existing station objects.
+    */
     private void consumeDriversCSVforStations() {
         //method variable declarations
         String inputStr;
@@ -305,7 +309,7 @@ public class SFMTASimulation {
             inputFile = new Scanner(file);
         }
         catch (FileNotFoundException e) {
-            System.out.println("File passengers.csv not found.");
+            System.out.println("File drivers.csv not found.");
         }
         // Read until the end of the file.
         while (inputFile.hasNext())
@@ -324,68 +328,44 @@ public class SFMTASimulation {
             
             /* Now that we have the name of the driver and place they're waiting, we'll create a new station object or add the driver to the object containing this station ID, if it already exists.
             */
-            if (stations.size() == 0) {
-                //this is the first station - go ahead and add it to stations
-                thisStation = new Station(stationID,name,true);
-                stations.add(thisStation);
+                
+            arrayIndex = findInArray(stationID);
+            
+            if (arrayIndex >= 0) { //there is already an object for this station
+                // add this driver to this station's queue
+                stations.get(arrayIndex).queueDriver(name); 
+                // sets the station to a origin or terminus
+                if (!stations.get(arrayIndex).getIsOriginOrTerminus())
+                    stations.get(arrayIndex).setIsOriginOrTerminus(true);
             }
-            else if (stations.size() == 1) {
-                /*
-                findInArray works with at least two array elements. In this 
-                case we just need to know if it's higher or lower than the one
+            else { // new station
+                // instantiate a new Station object
+                thisStation = new Station(stationID,name,true);
+                
+                /* now figure out where in array to put it. 
+                Beginning, end, or where in the middle?
                 */
-                
-                //instantiate Station object
-                thisStation = new Station(stationID,name,true);;
-                
-                //add to before or after current element
-                if (stationID > stations.get(0).getStationID()) {
+                if (stationID < stations.get(0).getStationID()) {
+                    // Lowest ID, make it the first array element.
+                    stations.add(0,thisStation);
+                }
+                else if (stationID >
+                    stations.get(stations.size()-1).getStationID()) {
+                    // Highest ID, make it the last array element.
                     stations.add(thisStation);
                 }
                 else {
-                    stations.add(0,thisStation);
-                }
-            }
-            else {
-                
-                arrayIndex = findInArray(stationID);
-                
-                if (arrayIndex >= 0) { //there is already an object for this station
-                    // add this driver to this station's queue
-                    stations.get(arrayIndex).queueDriver(name); 
-                    // sets the station to a origin or terminus
-                    if (!stations.get(arrayIndex).getIsOriginOrTerminus())
-                        stations.get(arrayIndex).setIsOriginOrTerminus(true);
-                }
-                else { // new station
-                    // instantiate a new Station object
-                    thisStation = new Station(stationID,name,true);
-                    
-                    /* now figure out where in array to put it. 
-                    Beginning, end, or where in the middle?
+                    /* find the right spot to put this new Station
+                    in our sorted list
                     */
-                    if (stationID < stations.get(0).getStationID()) {
-                        // Lowest ID, make it the first array element.
-                        stations.add(0,thisStation);
-                    }
-                    else if (stationID >
-                        stations.get(stations.size()-1).getStationID()) {
-                        // Highest ID, make it the last array element.
-                        stations.add(thisStation);
-                    }
-                    else {
-                        /* find the right spot to put this new Station
-                        in our sorted list
-                        */
-                        
-                        arrayIndex = findSpotInArray(stationID);
-                        
-                        //now store it in array 
-                        stations.add(arrayIndex,thisStation);
                     
-                    }
-                } // new station
-            } // stations.size() > 0
+                    arrayIndex = findSpotInArray(stationID);
+                    
+                    //now store it in array 
+                    stations.add(arrayIndex,thisStation);
+                
+                }
+            } // new station
         } // scanning through passengers file
         
         inputFile.close();// close the file when done.
