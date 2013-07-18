@@ -593,11 +593,11 @@ public class SFMTASimulation {
 	//or in other words, use getTotalNumPassengersOrDrivers()...
 	for(int i = 0; i < getTotalNumPassengersOrDrivers("passengers.csv"); i++){
 	
-		// j is used as an index for our passenger array object.
-		for(int j = 0; j < getTotalNumPassengersOrDrivers("passengers.csv"); j++){
-		
-			//Makes sure vehicle doesn't exceed it's passenger limitations.
-			while(vehicleName.getPassengerCount() <= vehicleName.getMaxCapacity()){
+		//Makes sure vehicle doesn't exceed it's passenger limitations.
+		while(vehicleName.getPassengerCount() <= vehicleName.getMaxCapacity()){
+				
+			// j is used as an index for our passenger array object.
+			for(int j = 0; j < getTotalNumPassengersOrDrivers("passengers.csv"); j++){
 				
 				//Checks the vehicles current location with the passengers ID. If they match,
 				if(vehicleName.getStopID() == passengers[j].getStartID()){
