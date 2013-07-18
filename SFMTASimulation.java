@@ -618,7 +618,9 @@ public class SFMTASimulation {
 	
 			//This if-statement ensures that the j-loop will continue to add passengers until the maximum is reached.
 			//Once the coach(es) are full, only then will the vehicle move to the next stop.
-			if(vehicleName.getPassengerCount() == vehicleName.getMaxCapacity()){
+			//If there are NO passengers present at the station, this if-statement makes sure that 
+			//the j-loop STILL looks for possible passengers before moving on to the next stop.
+			if(j == (getTotalNumPassengersOrDrivers("passengers.csv") - 1)){
 				
 				vehicleName.goToNextStop();	//Sends vehicles to the next station.
 	
