@@ -80,6 +80,84 @@ public class SFMTASimulation {
         // Now kick off the movement and action
         
         
+        //logic suggestions/ideas/brainstorming:
+        /* place one empty vehicle at each route's origin 
+        */
+        
+        /* 
+        
+        
+        For each vehicle, scan through the list of all passengers that are
+           on board that vehicle (I noticed you are storing that info
+           inside the vehicle instance)
+           alternatively, if we don't want a vehicle to keep track of who
+           is on board, scan through all passengers, and for each of those
+           who is on board a vehicle, 
+           call the passenger's decision method, which:
+           = Determines whether s/he has arrived at their next stop. That will
+            probably involve looking at their instance var that stores which
+            vehicle object they are in, and calling that vehicle's getStopID()
+           
+            +If so and it is the final destination, s/he should:
+             - call the vehicle's removePassenger method
+             - update their status to "done" - or maybe better to destroy
+                the passenger object by removign it from the array it was in.
+            +If so and it is a transfer stop, passenger should:
+             - call the vehicle's removePassenger method
+             - update their status/location to the station (which may be a 
+               different station ID, from TransferStops.csv), rather than on
+                 board that vehicle
+             - call the station's queueTransfer method
+             
+          Next scan through a list of passengers that are queued at a 
+          station. This may be evidence that a station does need to keep track
+          of who is at it! Alternatively, scan through all passengers, and do
+          this only for those who are queued. Alternatively yet, we could use 
+          two high-scope arrays, one for queued passengers, one for boarded
+          ones. No matter how we find the queued passengers:
+          
+          Call his/her decision method, which should:
+           = Determine whether a bus they want is at the station AND
+             if that vehicle has any available seats. If so,
+             they call the station's popPassenger() and 
+             call the vehicle's addPassenger() 
+             change their location/status to on board that particular vehicle.
+             
+         next scan through a list of waiting transfer passengers, IF we end
+         up using that "transfers" segregation logic, and call their
+         decision() methods
+         
+         Now, for each DRIVER driving a vehicle, run their decision() method.
+         If  they're currently at an origin or terminus, then see if it is
+         their seventh trip. If so, remove them from their vehicle by
+         calling some vehicle method, then run queueDriver() for the station,
+         and change driver status/location to the vehicle ID
+         
+         next for each driver waiting at a stop, run their decision() method:
+         if there is a driverless vehicle at the stop, get on board by calling
+         vehicle methods, call the station's popDriver(), and change
+         driver status/location to not have a vehicle ID anymore.
+         
+         Now we have moved all passengers and drivers, as well as
+         updated all station and vehicle objects' info. 
+         
+         So move every vehicle forward one stop. This is where we run the vehicle's decision() method. Recall that No 
+         more than two vehicles traveling in the same direction may be 
+         present in a station at any time.  Vehicles approaching an occupied
+          station wait in the order of their arrival.
+         See if the vehicle has changed from inbound to outbound, and do
+         whatever needs to be done with that.
+         See if it's reached a terminus for the first time and so
+         Should put a new vehicle  at the origin (which should also make that
+         new vehicle's decision() method run, in case there are already 
+         two vehicles at the origin)
+         Do the K switch to T logic in the decision method.
+              
+              repeat! Until no more passengers. Maybe another good reason to 
+              delete passengers from arrays as they reach their final
+              destinations.
+        */
+        
     }
     
     
