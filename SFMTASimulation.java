@@ -31,8 +31,9 @@ public class SFMTASimulation {
     private ArrayList<Station> stations = new ArrayList<Station>();
     private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
     
-    // This ArrayList may not be necessary because an array of passengers and drivers is going to be created.
-    private ArrayList<Person>  people   = new ArrayList<Person>(); // or two: drivers and passengers?
+    // The purpose of this list is to keep track of passengers in the program.
+    // When a passenger has reached their position, they are removed to the list.
+    private ArrayList<Person> passengersAL = createPassengerArrayList("passengers.csv"); // or two: drivers and passengers?
     
     // Creates two-dimensional string arrays for all 7 routes.
     private static String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
@@ -56,28 +57,6 @@ public class SFMTASimulation {
     
     // Instantiates an two-dimensional array holding the transfer stops.
     private String[][] transferStations = initializeTransferStops("TransferStops.csv");
-    
-    /**
-     * The getRouteInfo method allows access to the private route info.
-     * @param rName The name of the route.
-     * @return A two-dimesional array of a route.
-     */
-    public static String[][] getRouteInfo(String rName) {
-        if (rName.equals("8X"))
-            return v8xBayshoreRoute;
-        else if (rName.equals("47"))
-            return v47VanNessRoute;
-        else if (rName.equals("49"))
-            return v49MissionRoute;
-        else if (rName.equals("L"))
-            return vLTaravalRoute;
-        else if (rName.equals("N"))
-            return vNJudahRoute;
-        else if (rName.equals("KT"))
-            return vKTRoute;
-        else
-            return null;
-    }
     
     /**
     main method instantiates an object of the class and runs the simulation.
@@ -773,6 +752,37 @@ public class SFMTASimulation {
         return passenger;
     }
     
+     /**
+     * The createPassengerArrayList method creates an array of Person objects using
+     * information from the file.
+     * @param fileNamePassengers The file containing a list of passengers.
+     * @return passenger An arraylist of Person objects.
+     */
+    public static ArrayList<Person> createPassengerArrayList(String fileNamePassengers) {
+        //Creating passenger : an ArrayList of Person objects.
+        ArrayList<Person> passenger = new ArrayList<Person>();  //Creating ArrayList of Person object with size.
+        
+        try {
+		Scanner inputFile = new Scanner(new File(fileNamePassengers));
+		
+		for(int i = 0; inputFile.hasNextLine(); i++){
+			
+			String line = inputFile.nextLine();	//Stores line
+			String[] tokens = line.split(",");  //Splitting tokens with comma delimiter ","
+			
+			//Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
+			passenger.add(new Person(tokens[0], Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), "Passenger"));
+		}
+		
+		inputFile.close();	//Close file when done.
+		
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        
+        return passenger;
+    }
+    
     /**
      * The createDriverArray method creates an array of Person objects using
      * information from the file.
@@ -1056,6 +1066,28 @@ public class SFMTASimulation {
         }
 
         return transferStop;	
+    }
+    
+     /**
+     * The getRouteInfo method allows access to the private route info.
+     * @param rName The name of the route.
+     * @return A two-dimesional array of a route.
+     */
+    public static String[][] getRouteInfo(String rName) {
+        if (rName.equals("8X"))
+            return v8xBayshoreRoute;
+        else if (rName.equals("47"))
+            return v47VanNessRoute;
+        else if (rName.equals("49"))
+            return v49MissionRoute;
+        else if (rName.equals("L"))
+            return vLTaravalRoute;
+        else if (rName.equals("N"))
+            return vNJudahRoute;
+        else if (rName.equals("KT"))
+            return vKTRoute;
+        else
+            return null;
     }
     
 } // SFMTASimulation
