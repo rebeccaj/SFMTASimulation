@@ -582,6 +582,50 @@ public class SFMTASimulation {
         LRV KInglesideTThird = new LRV(vKTRoute, 'K');
     }
     
+    /**
+     * This launchVehicle method accepts a vehicle Object as an argument and moves the vehicle to the next station
+     * @param VehicleName A Vehicle object that has already been instantiated (i.e. 18xBayshore, or NJudah)
+     */
+    public static void launchVehicle(Vehicle vehicleName){
+
+	int passengersGoneIntoVehicle = 0
+
+	//Vehicle-move actions.
+	for(int i = 0; i < 10000; i++){
+	
+		for(int i = passengersGoneIntoVehicle ; i < vehicleName.getMaxCapacity; i++){
+
+			passenger[i].setCurrentLocationID(vehicleName.getStopID());
+			passenger[i].setCurrentVehicleID(vehicleName.getIDNumber());
+			vehicleName.addPassenger(passenger[i]);
+
+
+			int stationArrayIndex = findInArray(vehicleName.getStopID());
+	
+			stations.get(stationArrayIndex).popPassenger();
+
+			passengersGoneIntoVehicle++;
+
+		}
+	
+		vehicleName.goToNextStop();
+	
+		for(int i = passengersGoneIntoVehicle; i > vehicleName.getMaxCapacity; i--){
+
+			int stationArrayIndex = findInArray(vehicleName.getStopID());
+
+			passenger[i].setCurrentLocationID(vehicleName.getStopID());
+			passenger[i].setCurrentVehicleID(vehicleName.getIDNumber());
+
+			if(passenger[i].decisionGetOffVehicle(vehicleName.getStopID())){
+			
+				vehicleName.removePassenger(passenger[i]);	
+			
+			}
+		}
+	}
+}
+    
     
     private void initializePassengers() {}
     
