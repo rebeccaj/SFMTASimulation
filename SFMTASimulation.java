@@ -43,6 +43,14 @@ public class SFMTASimulation {
     private String[][] vNJudahRoute = createRouteArray("NJudah.csv");
     private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
     
+    // Instantiates the initial LRVs and Buses.
+    Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
+    Bus l47VanNess = new Bus(v47VanNessRoute, 47);
+    Bus l49Mission = new Bus(v49MissionRoute, 49);
+    LRV LTaraval = new LRV(vLTaravalRoute, 'L');
+    LRV NJudah = new LRV(vNJudahRoute, 'N');
+    LRV KInglesideTThird = new LRV(vKTRoute, 'K');
+    
     // Creates arrays holding Person objects.
     private Person[] passengers = createPassengerArray("passengers.csv");
     private Person[] drivers = createDriverArray("drivers.csv");
@@ -66,7 +74,6 @@ public class SFMTASimulation {
     private void runSimulation() {
         
         initializeStations();
-        initializeVehicles();
                 
         //These two tasks together satisfy task 5
         printStationPeopleCount();
@@ -577,17 +584,6 @@ public class SFMTASimulation {
         
     } // findSpotInArray method
     
-       
-    private void initializeVehicles() {
-        // Instantiates the initial LRVs and Buses.
-        Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
-        Bus l47VanNess = new Bus(v47VanNessRoute, 47);
-        Bus l49Mission = new Bus(v49MissionRoute, 49);
-        LRV LTaraval = new LRV(vLTaravalRoute, 'L');
-        LRV NJudah = new LRV(vNJudahRoute, 'N');
-        LRV KInglesideTThird = new LRV(vKTRoute, 'K');
-    }
-    
     /**
      * This launchVehicle method accepts a vehicle Object as an argument and moves the vehicle to the next station
      * @param VehicleName A Vehicle object that has already been instantiated (i.e. 18xBayshore, or NJudah)
@@ -629,7 +625,9 @@ public class SFMTASimulation {
 	
 			//This if-statement ensures that the j-loop will continue to add passengers until the maximum is reached.
 			//Once the coach(es) are full, only then will the vehicle move to the next stop.
-			if(vehicleName.getPassengerCount() == vehicleName.getMaxCapacity()){
+			//If there are NO passengers present at the station, this if-statement makes sure that 
+			//the j-loop STILL looks for possible passengers before moving on to the next stop.
+			if(j == (getTotalNumPassengersOrDrivers("passengers.csv") - 1)){
 				
 				vehicleName.goToNextStop();	//Sends vehicles to the next station.
 	
