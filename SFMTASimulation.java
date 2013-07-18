@@ -588,24 +588,32 @@ public class SFMTASimulation {
      */
     public static void launchVehicle(Vehicle vehicleName){
 
-	int passengersGoneIntoVehicle = 0
+	int passengersGoneIntoVehicle = 0	//Need to know how much passengers we have cycled through
+						//To be able to go back to the passengers inside the vehicle
+						//at the next station in order to update and check their currentLocationID.
 
-	//Vehicle-move actions.
-	for(int i = 0; i < 10000; i++){
+	//Vehicle-move actions. We also need to check all passenger ID's, so the upper-limit of should be the total number of passengers,
+	//or in other words, use getTotalNumPassengersOrDrivers()...
+	for(int i = 0; i < getTotalNumPassengersOrDrivers("passengers.csv"); i++){
 	
-		for(int i = passengersGoneIntoVehicle ; i < vehicleName.getMaxCapacity; i++){
-
-			passenger[i].setCurrentLocationID(vehicleName.getStopID());
-			passenger[i].setCurrentVehicleID(vehicleName.getIDNumber());
-			vehicleName.addPassenger(passenger[i]);
-
-
-			int stationArrayIndex = findInArray(vehicleName.getStopID());
+		if(vehicleName.getStopID() == passenger[i].getStartID()){
+			
+			for(int i = passengersGoneIntoVehicle ; i < vehicleName.getMaxCapacity; i++){	
+				//vehicleName.getMaxCapacity as the max limit because we don't want to exceed vehicle's passenger limit.
 	
-			stations.get(stationArrayIndex).popPassenger();
+				passenger[i].setCurrentLocationID(vehicleName.getStopID());
+				passenger[i].setCurrentVehicleID(vehicleName.getIDNumber());
+				vehicleName.addPassenger(passenger[i]);
 
-			passengersGoneIntoVehicle++;
 
+				int stationArrayIndex = findInArray(vehicleName.getStopID());
+	
+				stations.get(stationArrayIndex).popPassenger();
+				
+
+				passengersGoneIntoVehicle++;
+
+			}
 		}
 	
 		vehicleName.goToNextStop();
