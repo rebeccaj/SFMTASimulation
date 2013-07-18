@@ -465,6 +465,20 @@ public class SFMTASimulation {
     */
     private void printStationDriverCount() {
         
+        PrintWriter outputFile = null;
+        
+        try {
+            outputFile = new PrintWriter("StationDriverCount.txt");
+        }
+        catch (Exception e) {
+            System.out.println("Error");
+        }
+        for (Station s : stations) {
+            if (s.getIsOriginOrTerminus())
+                outputFile.println(s.getStationID() + "," + s.getDriverCount());
+        }
+        
+        outputFile.close();
     }
     
     /**
