@@ -43,6 +43,14 @@ public class SFMTASimulation {
     private String[][] vNJudahRoute = createRouteArray("NJudah.csv");
     private String[][] vKTRoute = createRouteArray("KIngleside.csv", "TThird.csv");
     
+    // Instantiates the initial LRVs and Buses.
+    Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
+    Bus l47VanNess = new Bus(v47VanNessRoute, 47);
+    Bus l49Mission = new Bus(v49MissionRoute, 49);
+    LRV LTaraval = new LRV(vLTaravalRoute, 'L');
+    LRV NJudah = new LRV(vNJudahRoute, 'N');
+    LRV KInglesideTThird = new LRV(vKTRoute, 'K');
+    
     // Creates arrays holding Person objects.
     private Person[] passengers = createPassengerArray("passengers.csv");
     private Person[] drivers = createDriverArray("drivers.csv");
@@ -66,7 +74,6 @@ public class SFMTASimulation {
     private void runSimulation() {
         
         initializeStations();
-        initializeVehicles();
                 
         //These two tasks together satisfy task 5
         printStationPeopleCount();
@@ -565,17 +572,6 @@ public class SFMTASimulation {
         return lowestIndex + 1;
         
     } // findSpotInArray method
-    
-       
-    private void initializeVehicles() {
-        // Instantiates the initial LRVs and Buses.
-        Bus l8xBayshore = new Bus(v8xBayshoreRoute, 8);
-        Bus l47VanNess = new Bus(v47VanNessRoute, 47);
-        Bus l49Mission = new Bus(v49MissionRoute, 49);
-        LRV LTaraval = new LRV(vLTaravalRoute, 'L');
-        LRV NJudah = new LRV(vNJudahRoute, 'N');
-        LRV KInglesideTThird = new LRV(vKTRoute, 'K');
-    }
     
     /**
      * This launchVehicle method accepts a vehicle Object as an argument and moves the vehicle to the next station
