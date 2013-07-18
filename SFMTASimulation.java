@@ -95,7 +95,7 @@ public class SFMTASimulation {
            
             +If so and it is the final destination, s/he should:
              - call the vehicle's removePassenger method
-             - update their status to "done" - or maybe better to destroy
+             - destroy
                 the passenger object by removign it from the array it was in.
             +If so and it is a transfer stop, passenger should:
              - call the vehicle's removePassenger method
@@ -951,6 +951,7 @@ class Station {
     
     private int stationID; // unique station identifier
     private ArrayList<String> passengers; // passengers waiting at station
+    private ArrayList<String> transfers; // transferring passengers waiting
     private ArrayList<String> drivers;    // drivers waiting at station
     private boolean isOriginOrTerminus;   
     
@@ -962,6 +963,7 @@ class Station {
         
         stationID  = 0;
         passengers = new ArrayList<String>();
+        transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = false;
     }
@@ -974,6 +976,7 @@ class Station {
         
         stationID  = id;
         passengers = new ArrayList<String>();
+        transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = false;
     }
@@ -988,6 +991,7 @@ class Station {
         
         stationID  = id;
         passengers = new ArrayList<String>();
+        transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = false;
         
@@ -1005,6 +1009,7 @@ class Station {
         
         stationID  = id;
         passengers = new ArrayList<String>();
+        transfers  = new ArrayList<String>();
         drivers    = new ArrayList<String>();
         isOriginOrTerminus = true; // drivers wait at origin or terminus
         
@@ -1029,6 +1034,16 @@ class Station {
     public int getPassengerCount() {
         
         return passengers.size();
+    }
+    
+    
+    /**
+    getTransferCount method
+    @return the int count of transferring passengers at this station
+    */
+    public int getTransferCount() {
+        
+        return transfers.size();
     }
     
     
@@ -1064,6 +1079,17 @@ class Station {
     
     
     /**
+    queueTransfer method
+    Called when we have a new transferring passenger waiting at this station.
+    @param t String passenger to add to transfers
+    */
+    public void queueTransfer(String t) {
+        
+        transfers.add(t);
+    }
+    
+    
+    /**
     queueDriver method
     Called when we have a new driver waiting at this station.
     @param d String driver to add to drivers
@@ -1076,11 +1102,21 @@ class Station {
     
     /**
     popPassenger method
-    Called when the first passenger in line has left this station.
+    Called when any passenger has left this station.
     */
     public void popPassenger() {
         
         passengers.remove(0);
+    }
+    
+    
+    /**
+    popTransfer method
+    Called when any transferring passenger has left this station.
+    */
+    public void popTransfer() {
+        
+        transfers.remove(0);
     }
     
     
