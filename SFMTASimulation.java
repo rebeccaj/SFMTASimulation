@@ -586,7 +586,7 @@ public class SFMTASimulation {
      * This launchVehicle method accepts a vehicle Object as an argument and moves the vehicle to the next station
      * @param VehicleName A Vehicle object that has already been instantiated (i.e. 18xBayshore, or NJudah)
      */
-    public static void launchVehicle(Vehicle vehicleName){
+    private void launchVehicle(Vehicle vehicleName){
 
 
 	//Vehicle-move actions. We also need to check all passenger ID's, so the upper-limit of should be the total number of passengers,
@@ -600,18 +600,18 @@ public class SFMTASimulation {
 			while(vehicleName.getPassengerCount() <= vehicleName.getMaxCapacity()){
 				
 				//Checks the vehicles current location with the passengers ID. If they match,
-				if(vehicleName.getStopID() == passenger[j].getStartID()){
+				if(vehicleName.getStopID() == passengers[j].getStartID()){
 			
-					passenger[j].setCurrentLocationID(vehicleName.getStopID());	//Update current location (which station)
-					passenger[j].setCurrentVehicleID(vehicleName.getIDNumber());	//Update vehicle on
-					vehicleName.addPassenger(passenger[j]);				//Add passenger to vehicle object
+					passengers[j].setCurrentStationID(vehicleName.getStopID());	    //Update current location (which station)
+					passengers[j].setCurrentVehicleID(vehicleName.getIDNumber());	//Update vehicle on
+					vehicleName.addPassenger(passengers[j]);				//Add passenger to vehicle object
 
 					//Once the user gets onto the vehicle, he will be headed towards his destination.
 					//We no longer need the start ID (unless its a transfer? not sure about that yet)
 					//So we assign aa "unused" station ID that does not exist, to prevent the passenger
 					// object from ever boarding again.
 					int delete = 0;
-					passenger[j].setStartID(delete);
+					passengers[j].setStartID(delete);
 					
 					//Finding the station index where station exists
 					int stationArrayIndex = findInArray(vehicleName.getStopID());
@@ -625,12 +625,12 @@ public class SFMTASimulation {
 	
 			int stationArrayIndex = findInArray(vehicleName.getStopID());
 
-			passenger[j].setCurrentLocationID(vehicleName.getStopID());
-			passenger[j].setCurrentVehicleID(vehicleName.getIDNumber());
+			passengers[j].setCurrentStationID(vehicleName.getStopID());
+			passengers[j].setCurrentVehicleID(vehicleName.getIDNumber());
 
-			if(passenger[j].decisionGetOffVehicle(vehicleName.getStopID())){
+			if(passengers[j].decisionGetOffVehicle()) {
 			
-				vehicleName.removePassenger(passenger[j]);
+				vehicleName.removePassenger(passengers[j]);
 		
 			}
 		}
