@@ -616,17 +616,22 @@ public class SFMTASimulation {
 				}
 			}//Once max capacity of vehicle has been filled, the vehicle goes to the next Station.
 	
-			vehicleName.goToNextStop();	//Sends vehicles to the next station.
+			//This if-statement ensures that the j-loop will continue to add passengers until the maximum is reached.
+			//Once the coach(es) are full, only then will the vehicle move to the next stop.
+			if(vehicleName.getPassengerCount() == vehicleName.getMaxCapacity()){
+				
+				vehicleName.goToNextStop();	//Sends vehicles to the next station.
 	
-			int stationArrayIndex = findInArray(vehicleName.getStopID());
+				int stationArrayIndex = findInArray(vehicleName.getStopID());
 
-			passengers[j].setCurrentStationID(vehicleName.getStopID());
-			passengers[j].setCurrentVehicleID(vehicleName.getIDNumber());
+				passengers[j].setCurrentStationID(vehicleName.getStopID());
+				passengers[j].setCurrentVehicleID(vehicleName.getIDNumber());
 
-			if(passengers[j].decisionGetOffVehicle()) {
+				if(passengers[j].decisionGetOffVehicle()) {
 			
-				vehicleName.removePassenger(passengers[j]);
+					vehicleName.removePassenger(passengers[j]);
 		
+				}
 			}
 		}
 	}
