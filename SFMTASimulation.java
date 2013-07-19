@@ -1103,30 +1103,30 @@ public class SFMTASimulation {
     }
     
     /**
-     * Method calculates and returns the number of lines in a file; Num of lines determines how many "people" are present in file.
-     * @param filename Name of file we will read  
-     * @return An integer that will influence size of an Array of Person objects
-     */
-    public static int getTotalNumPassengersOrDrivers(String filename){
+	 * Method calculates and returns the number of lines in a file; Num of lines determines how many "people" are present in file.
+	 * @param filename Name of file we will read.
+	 * @return An integer that will influence size of an Array of Person objects
+	 */
+	public static int getTotalNumPassengersOrDrivers(String filename){
 		
-	int personCount = 0;	//Set flag to 0.
+		int personCount = 0;	//Set flag to 0.
 		
-	try {
-		Scanner inputFile = new Scanner(new File(filename));
+		try {
+			Scanner inputFile = new Scanner(new File(filename));
 			
-		while(inputFile.hasNextLine()){
-			inputFile.nextLine();			//Move to next line.
-			personCount++;
+			while(inputFile.hasNextLine()){
+				inputFile.nextLine();			//Move to next line.
+				personCount++;
+			}
+			
+			inputFile.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
 		}
-			
-		inputFile.close();
-			
-	} catch (FileNotFoundException e) {
-		System.out.println("File not found.");
-	}
 		
-	return personCount;	//Return the count
-    }
+		return personCount;	//Return the count
+	}
 	
     /**
      * The initializeTransferStops methods returns a two-dimensional array
@@ -1153,9 +1153,9 @@ public class SFMTASimulation {
             System.out.println("File not found.");
         }
 
-        final int TOTAL_TRANSFER_STOPS = stopCounter;	//Number of transfetStops
+        final int TOTAL_TRANSFER_STOPS = stopCounter;
 
-        String[][] transferStop = new String[TOTAL_TRANSFER_STOPS][TOTAL_TRANSFER_STOPS];	//Creating a 2D String array to store transfer Stop and its components
+        String[][] transferStop = new String[TOTAL_TRANSFER_STOPS][TOTAL_TRANSFER_STOPS];
 
         try{
             
@@ -1642,14 +1642,6 @@ class Vehicle {
     }
     
     /**
-     * The getNumOfPassengers method returns the number of passengers in the vehicle.
-     * @return An integer value of the current of number of passengers in the vehicle.
-     */
-    public int getNumOfPassengers() {
-        return passengerList.size();
-    }
-    
-    /**
      * The getPassengerCount method returns the number of passengers in the vehicle.
      * @return The number of passengers in the vehicle.
      */
@@ -1658,30 +1650,17 @@ class Vehicle {
     }
     
     /**
-     * The getPassengerList method returns an array of the passengers' name
-     * in each element.
-     * @return list An array of the passengers' name. 
+     * getHasDriver hasDriver getter method
+     * @return hasDriver A boolean value if the vehicle has a driver.
      */
-    /* Obsolete method
-    public Person[] getPassengerList() {
-        Person[] list = new Person[passengerList.size()];
-    
-        for (int i = 0; i < list.length; i++)
-            list[i] = passengerList.get(i);
-            
-        return list;
-    }*/
-    
-    /**
-    getHasDriver hasDriver getter method
-    */
     public boolean getHasDriver() {
         return hasDriver;
     }
     
     /**
-    setHasDriver hasDriver setter method
-    */
+     * setHasDriver hasDriver setter method
+     * @param h A boolean value to set hasDriver.
+     */
     public void setHasDriver(boolean h) {
         hasDriver = h;
     }
@@ -1809,6 +1788,11 @@ class Bus extends Vehicle {
         vRouteName = null;
     }
     
+    /**
+     * Two-Argument Constructor
+     * @param route An array holding the route information for the vehicle.
+     * @param bNum A int value to set the Bus Type.
+     */
     public Bus(String[][] route, int bNum) {
         super(route);   // Calls the superclass's constructor
         vType = Type.BUS;
@@ -1855,6 +1839,11 @@ class LRV extends Vehicle {
         vRouteName = null;
     }
     
+    /**
+     * Two-Argument Constructor
+     * @param route An array holding the route information for the vehicle.
+     * @param cName A char value to set the LRV Type.
+     */
     public LRV(String[][] route, char cName) {
         super(route);   // Calls the superclass's constructor
         vType = Type.LRV;
@@ -1894,11 +1883,11 @@ about complexity of assignment given short time to complete it).
 */
 class Person {
 
-    private int currentStationID;	//Store int (parsed from string) retrieved from vehicle class
-    private int currentVehicleID;	//Store the Vehicles Unique assigned ID.	
+    private int currentStationID;	//Store string retrieved from vehicle class
+    private int currentVehicleID;	
     private int startID;				//Initializes when an instance of Person in created
-    private int stopID;			//Person's final-destination's ID
-    private String name;		//Peron object's name.
+    private int stopID;
+    private String name;
     private String personType;			//Later on when we need to transfer/ get off... might need (could use enums, dont know how)
     private boolean reachedDestination = false;
     private boolean needToTransfer = false;
@@ -1910,32 +1899,32 @@ class Person {
 	/**
 	 * No arg constructor
 	 */
-    public Person(){
+	public Person(){
 
-	startID = 0;
-	stopID = 0;
-	String name = null;
-	System.out.println("Error, please enter name of person.");
-    }
+		startID = 0;
+		stopID = 0;
+		String name = null;
+		System.out.println("Error, please enter name of person.");
+	}
 	
-    /**
-     * Constructor that creates individual person classes.
-     * @param nameTag Assign to name.
-     * @param beginPos Assign to start ID.
-     * @param endPos Assign to Stop ID.
-     * @param typeOfPerson Assign to personType.
-     */
-     public Person(String nameTag, int beginPos, int endPos, String typeOfPerson){
+	/**
+	 * Constructor that creates individual person classes.
+	 * @param nameTag Assign to name.
+	 * @param beginPos Assign to start ID.
+	 * @param endPos Assign to Stop ID.
+	 * @param typeOfPerson Assign to personType.
+	 */
+	public Person(String nameTag, int beginPos, int endPos, String typeOfPerson){
 		
-	setStartID(beginPos);
-	setStopID(endPos);
-	setName(nameTag);
-	personType = typeOfPerson;
+		setStartID(beginPos);
+		setStopID(endPos);
+		setName(nameTag);
+		personType = typeOfPerson;
         routePlan = new ArrayList<Integer>();
         vehiclePlan = new ArrayList<String>();
         createRoutePlan(); // Calls a method to fill routePlan with data
         
-    }
+	}
     
     /**
     decision method 
@@ -1960,79 +1949,133 @@ class Person {
         
     }
     
+    /**
+     * The decisionGetOffVehicle method decides if the passenger should get off the vehicle.
+     * @return getOff A boolean value determining if they should get off.
+     */
 	public boolean decisionGetOffVehicle(){
 		
 		boolean getOff = false;
 		
-		if(getStopID() == getCurrentStationID()){	//Compare final-destination ID with currentStationID(where vehicle is located.)
+		if(getStopID() == getCurrentStationID()){
 			getOff = true;
 		}
 		
 		return getOff;
 	}
-		
+	
+    /**
+     * The setStartID method sets the startID of the passenger.
+     * @param startPos An integer value to set as the startID.
+     */
 	public void setStartID(int startPos){
 		
 		startID = startPos;
 	}
 	
+    /**
+     * The setStopID method sets the stopID of the passenger.
+     * @param endPos An integer value to set as the stopID.
+     */
 	public void setStopID(int endPos){
 		
 		stopID = endPos;
 	}
 	
+    /**
+     * The setName method sets the name of the passenger.
+     * @param nameTag An String value to set the name of the passenger.
+     */
 	public void setName(String nameTag){
 		
 		name = nameTag;
 	}
 	
+    /**
+     * getStartID gets the startID
+     * @return startID The passenger's startID.
+     */
 	public int getStartID(){
 		
 		return startID;
 	}
 	
+    /**
+     * getStopID gets the stopID
+     * @return stopID The passenger's stopID.
+     */
 	public int getStopID(){
 		
 		return stopID;
 	}
 	
+    /**
+     * getName gets the name
+     * @return name The passenger's name.
+     */
 	public String getName(){
 		
 		return name;
 	}
 	
+    /**
+     * setCurrentStationID sets the stationID
+     * @param stationID The integer value to set stationID.
+     */
 	public void setCurrentStationID(int stationID){
 		
 		//Needs to access vehicle class, get station ("location") id.
 		currentStationID = stationID;
 	}
 	
+    /**
+     * setCurrentVehicleID sets the vehicleID
+     * @param vehicleID The integer value to set vehicleID.
+     */
 	public void setCurrentVehicleID(int vehicleID){
 		//Needs to access vehicle class, get vehicle id.
 		currentVehicleID = vehicleID;
 	}
 	
+    /**
+     * getCurrentStationID gets the stationID
+     * @return stationID The passenger's stationID.
+     */
 	public int getCurrentStationID(){
 		
 		return currentStationID;
 	}
 	
+    /**
+     * getVehicleID gets the vehicleID
+     * @return vehicleID The passenger's vehicleID.
+     */
 	public int getCurrentVehicleID(){
 		
 		return currentVehicleID;
 	}
 	
+    /**
+     * getPersonType gets the personType
+     * @return personType The passenger's type.
+     */
 	public String getPersonType(){
 		
 		return personType;
 	}
 	
+    /**
+     * changePersonStatusStationAndVehicle changes a passenger's status.
+     */
 	public void changePersonStatusStationAndVehicle(){
 		
 		amIOnAVehicle = true;
 		amIAtAStation = false;
 	}
     
+    /**
+     * The createRoutePlan creates a rotue plan for the passenger.
+     */
     private void createRoutePlan() {
         ArrayList<String> startVehicle = new ArrayList<String>();
         ArrayList<String> stopVehicle = new ArrayList<String>();
@@ -2334,37 +2377,60 @@ class MuniDriver { // note: Driver may be a java keyword, so used this
         tripNumber = 0;
     }
     
-    
+    /**
+     * getName gets name
+     */
     public String getName(){
         
         return name;
     }
     
+    /**
+     * getCurrentStationID gets currentStationID
+     */
     public int getCurrentStationID(){
         
         return currentStationID;
     }
     
+    /**
+     * getCurrentVehicleID gets currentVehicleID
+     */
     public int getCurrentVehicleID(){
         
         return currentVehicleID;
     }
     
+    /**
+     * getTripNumber gets tripNumber
+     */
     public int getTripNumber(){
         
         return tripNumber;
     }
     
+    /**
+     * setCurrentStationID sets currentStationID
+     * @param s An integer value to set as the currentStationID.
+     */
     public void setCurrentStationID(int s){
         
         currentStationID = s;
     }
     
+    /**
+     * setCurrentVehicleID sets currentVehicleID
+     * @param s An integer value to set as the currentVehicleID.
+     */
     public void setCurrentVehicleID(int v){
     
         currentVehicleID = v;
     }
     
+    /**
+     * setTripNumber sets tripNumber
+     * @param s An integer value to set as the tripNumber.
+     */
     public void setTripNumber(int t) {
         
         tripNumber = t;
