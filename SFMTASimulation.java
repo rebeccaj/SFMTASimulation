@@ -1103,30 +1103,30 @@ public class SFMTASimulation {
     }
     
     /**
-	 * Method calculates and returns the number of lines in a file; Num of lines determines how many "people" are present in file.
-	 * @param filename Name of file we will read.
-	 * @return An integer that will influence size of an Array of Person objects
-	 */
-	public static int getTotalNumPassengersOrDrivers(String filename){
+     * Method calculates and returns the number of lines in a file; Num of lines determines how many "people" are present in file.
+     * @param filename Name of file we will read  
+     * @return An integer that will influence size of an Array of Person objects
+     */
+    public static int getTotalNumPassengersOrDrivers(String filename){
 		
-		int personCount = 0;	//Set flag to 0.
+	int personCount = 0;	//Set flag to 0.
 		
-		try {
-			Scanner inputFile = new Scanner(new File(filename));
+	try {
+		Scanner inputFile = new Scanner(new File(filename));
 			
-			while(inputFile.hasNextLine()){
-				inputFile.nextLine();			//Move to next line.
-				personCount++;
-			}
-			
-			inputFile.close();
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
+		while(inputFile.hasNextLine()){
+			inputFile.nextLine();			//Move to next line.
+			personCount++;
 		}
-		
-		return personCount;	//Return the count
+			
+		inputFile.close();
+			
+	} catch (FileNotFoundException e) {
+		System.out.println("File not found.");
 	}
+		
+	return personCount;	//Return the count
+    }
 	
     /**
      * The initializeTransferStops methods returns a two-dimensional array
@@ -1153,9 +1153,9 @@ public class SFMTASimulation {
             System.out.println("File not found.");
         }
 
-        final int TOTAL_TRANSFER_STOPS = stopCounter;
+        final int TOTAL_TRANSFER_STOPS = stopCounter;	//Number of transfetStops
 
-        String[][] transferStop = new String[TOTAL_TRANSFER_STOPS][TOTAL_TRANSFER_STOPS];
+        String[][] transferStop = new String[TOTAL_TRANSFER_STOPS][TOTAL_TRANSFER_STOPS];	//Creating a 2D String array to store transfer Stop and its components
 
         try{
             
@@ -1894,11 +1894,11 @@ about complexity of assignment given short time to complete it).
 */
 class Person {
 
-    private int currentStationID;	//Store string retrieved from vehicle class
-    private int currentVehicleID;	
+    private int currentStationID;	//Store int (parsed from string) retrieved from vehicle class
+    private int currentVehicleID;	//Store the Vehicles Unique assigned ID.	
     private int startID;				//Initializes when an instance of Person in created
-    private int stopID;
-    private String name;
+    private int stopID;			//Person's final-destination's ID
+    private String name;		//Peron object's name.
     private String personType;			//Later on when we need to transfer/ get off... might need (could use enums, dont know how)
     private boolean reachedDestination = false;
     private boolean needToTransfer = false;
@@ -1910,32 +1910,32 @@ class Person {
 	/**
 	 * No arg constructor
 	 */
-	public Person(){
+    public Person(){
 
-		startID = 0;
-		stopID = 0;
-		String name = null;
-		System.out.println("Error, please enter name of person.");
-	}
+	startID = 0;
+	stopID = 0;
+	String name = null;
+	System.out.println("Error, please enter name of person.");
+    }
 	
-	/**
-	 * Constructor that creates individual person classes.
-	 * @param nameTag Assign to name.
-	 * @param beginPos Assign to start ID.
-	 * @param endPos Assign to Stop ID.
-	 * @param typeOfPerson Assign to personType.
-	 */
-	public Person(String nameTag, int beginPos, int endPos, String typeOfPerson){
+    /**
+     * Constructor that creates individual person classes.
+     * @param nameTag Assign to name.
+     * @param beginPos Assign to start ID.
+     * @param endPos Assign to Stop ID.
+     * @param typeOfPerson Assign to personType.
+     */
+     public Person(String nameTag, int beginPos, int endPos, String typeOfPerson){
 		
-		setStartID(beginPos);
-		setStopID(endPos);
-		setName(nameTag);
-		personType = typeOfPerson;
+	setStartID(beginPos);
+	setStopID(endPos);
+	setName(nameTag);
+	personType = typeOfPerson;
         routePlan = new ArrayList<Integer>();
         vehiclePlan = new ArrayList<String>();
         createRoutePlan(); // Calls a method to fill routePlan with data
         
-	}
+    }
     
     /**
     decision method 
@@ -1964,7 +1964,7 @@ class Person {
 		
 		boolean getOff = false;
 		
-		if(getStopID() == getCurrentStationID()){
+		if(getStopID() == getCurrentStationID()){	//Compare final-destination ID with currentStationID(where vehicle is located.)
 			getOff = true;
 		}
 		
