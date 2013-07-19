@@ -132,6 +132,10 @@ public class SFMTASimulation {
             //  move vehicles forward from current stop
             
             //  call vehicle.decision() for all vehicles
+            
+            // update loop control variable based upon current conditions:
+            // are all passengers at their destinations?
+            done = true;
         
         } // main control loop
         
