@@ -117,7 +117,6 @@ public class SFMTASimulation {
         
         // while there are still passengers in system:
         while (!done) { 
-            
             //  call passenger.decision() for any passengers currently on board
             
             
@@ -136,6 +135,7 @@ public class SFMTASimulation {
             // update loop control variable based upon current conditions:
             // are all passengers at their destinations?
             done = true;
+            System.out.println("NO OTHER OUTPUT");
         
         } // main control loop
         
