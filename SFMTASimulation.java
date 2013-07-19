@@ -1935,12 +1935,12 @@ class Person {
         ArrayList<String> startVehicle = new ArrayList<String>();
         ArrayList<String> stopVehicle = new ArrayList<String>();
         
-        private static String[][] 8xBayshoreRoute = SFMTASimulation.createRouteArray("8xBayshore.csv");
-        private static String[][] 47VanNessRoute = SFMTASimulation.createRouteArray("47VanNess.csv");
-        private static String[][] 49MissionRoute = SFMTASimulation.createRouteArray("49Mission.csv");
-        private static String[][] LTaravalRoute = SFMTASimulation.createRouteArray("LTaraval.csv");
-        private static String[][] NJudahRoute = SFMTASimulation.createRouteArray("NJudah.csv");
-        private static String[][] KTRoute = SFMTASimulation.createRouteArray("KIngleside.csv", "TThird.csv");
+        String[][] l8xBayshoreRoute = SFMTASimulation.createRouteArray("8xBayshore.csv");
+        String[][] l47VanNessRoute = SFMTASimulation.createRouteArray("47VanNess.csv");
+        String[][] l49MissionRoute = SFMTASimulation.createRouteArray("49Mission.csv");
+        String[][] LTaravalRoute = SFMTASimulation.createRouteArray("LTaraval.csv");
+        String[][] NJudahRoute = SFMTASimulation.createRouteArray("NJudah.csv");
+        String[][] KTRoute = SFMTASimulation.createRouteArray("KIngleside.csv", "TThird.csv");
         
         // Searches through all the routes and finds routes that passes through
         // the object's startID and stopID.
@@ -1951,18 +1951,18 @@ class Person {
             
             //Check All Routes for Stop ID.
             
-            if(i < 8xBayshoreRoute[0].length){
+            if(i < l8xBayshoreRoute[0].length){
             	if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
            	    stopVehicle.add("8X");
                 }
             }   
             
-            if(i < 47VanNessRoute[0].length){
+            if(i < l47VanNessRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
                     stopVehicle.add("47");
                 }
             }   
-            if(i < 49MissionRoute[0].length){
+            if(i < l49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
                 }
@@ -1990,18 +1990,18 @@ class Person {
             
              //Check All Routes for Stop ID.
             
-            if(i < 8xBayshoreRoute[0].length){
+            if(i < l8xBayshoreRoute[0].length){
             	if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
            	    stopVehicle.add("8X");
                 }
             }   
             
-            if(i < 47VanNessRoute[0].length){
+            if(i < l47VanNessRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
                     stopVehicle.add("47");
                 }
             }   
-            if(i < 49MissionRoute[0].length){
+            if(i < l49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
                 }
@@ -2029,18 +2029,18 @@ class Person {
             
              //Check All Routes for Stop ID.
             
-            if(i < 8xBayshoreRoute[0].length){
+            if(i < l8xBayshoreRoute[0].length){
             	if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
            	    stopVehicle.add("8X");
                 }
             }   
             
-            if(i < 47VanNessRoute[0].length){
+            if(i < l47VanNessRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
                     stopVehicle.add("47");
                 }
             }   
-            if(i < 49MissionRoute[0].length){
+            if(i < l49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
                 }
@@ -2068,18 +2068,18 @@ class Person {
             
              //Check All Routes for Stop ID.
             
-            if(i < 8xBayshoreRoute[0].length){
+            if(i < l8xBayshoreRoute[0].length){
             	if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
            	    stopVehicle.add("8X");
                 }
             }   
             
-            if(i < 47VanNessRoute[0].length){
+            if(i < l47VanNessRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
                     stopVehicle.add("47");
                 }
             }   
-            if(i < 49MissionRoute[0].length){
+            if(i < l49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
                 }
@@ -2107,18 +2107,18 @@ class Person {
            
              //Check All Routes for Stop ID.
             
-            if(i < 8xBayshoreRoute[0].length){
+            if(i < l8xBayshoreRoute[0].length){
             	if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
            	    stopVehicle.add("8X");
                 }
             }   
             
-            if(i < 47VanNessRoute[0].length){
+            if(i < l47VanNessRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
                     stopVehicle.add("47");
                 }
             }   
-            if(i < 49MissionRoute[0].length){
+            if(i < l49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
                 }
@@ -2146,18 +2146,18 @@ class Person {
            
              //Check All Routes for Stop ID.
             
-            if(i < 8xBayshoreRoute[0].length){
+            if(i < l8xBayshoreRoute[0].length){
             	if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("8X")[i][1])) {
            	    stopVehicle.add("8X");
                 }
             }   
             
-            if(i < 47VanNessRoute[0].length){
+            if(i < l47VanNessRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
                     stopVehicle.add("47");
                 }
             }   
-            if(i < 49MissionRoute[0].length){
+            if(i < l49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
                 }
