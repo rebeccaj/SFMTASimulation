@@ -1760,8 +1760,37 @@ class Vehicle {
         else if (vehicleDir.equals(Direction.OUTBOUND))
             vehicleDir = Direction.INBOUND;
     }
-
-}
+    
+    
+    /**
+    decision method 
+    This vehicle instance analyzes the current state of affairs to see if  
+    it needs to do anything.
+       No more than two vehicles traveling in the same direction may be 
+         present in a station at any time, so look to see if the station
+         we want to go to is occupied.
+         Vehicles approaching an occupied
+          station wait in the order of their arrival. Use Station's
+          getNumberOfVehicles(0) or getNumberOfVehicles(1) to see if it's full,
+          if it is full, then use station queueWaitingOutbound() or
+          queueWaitingInbound() to get in line.
+         Has the vehicle arrived at an origin or terminus? if so, 
+             change enum Direction (a flag which indicates in which direction
+             along the route the vehicle will move)  
+             Print this line:
+             B:Vehicle#:Driver:Direction:RouteName:NumberOfCoaches
+             where B indicates it's a bus, L and LRV
+         See if it's reached a terminus for the FIRST time and so
+         Should put a new vehicle  at the origin (which should also make that
+         new vehicle's decision() method run, in case there are already 
+         two vehicles at the origin)
+         Do the K switch to T logic in this method.
+    @param destinationStationID int the station we need to move to
+    */
+    public void decision(int destinationStationID) {
+        
+    }
+}  // class Vehicle
 
 class Bus extends Vehicle {
 
