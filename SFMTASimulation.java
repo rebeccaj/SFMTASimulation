@@ -74,7 +74,26 @@ public class SFMTASimulation {
         
     }
     
-    private void runSimulation() {
+    
+        /**
+        runSimulation() method creates all of the objects in the system,
+            moves the vehicles, and then calls object decision() methods
+            in which the objects update themselves based upon the new
+            positions of the vehicles. The algorithm is:
+            initialize objects
+            print text files for task 5
+            put a vehicle at each origin
+            loop through the following until no passengers remain in system:
+            
+                call passenger.decision() for any passengers currently on board
+                call passenger.decision() for passengers waiting at station
+                call passenger.decision() for transferring passengers
+                call driver.decision() for all drivers on board vehicles
+                call driver.decision() for two drivers waiting at each station
+                move vehicles forward from current stop
+                call vehicle.decision() for all vehicles
+        */
+        private void runSimulation() {
         
         // Acts as a loading message.
         System.out.println("Initializing Simulation...");
