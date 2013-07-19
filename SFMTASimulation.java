@@ -58,6 +58,7 @@ public class SFMTASimulation {
     // Instantiates an two-dimensional array holding the transfer stops.
     private String[][] transferStations = initializeTransferStops("TransferStops.csv");
     
+    
     /**
     main method instantiates an object of the class and runs the simulation.
     @param String[] args
@@ -74,6 +75,24 @@ public class SFMTASimulation {
         
     }
     
+    /**
+    runSimulation() method creates all of the objects in the system,
+        moves the vehicles, and then calls object decision() methods
+        in which the objects update themselves based upon the new
+        positions of the vehicles. The algorithm is:
+        initialize objects
+        print text files for task 5
+        put a vehicle at each origin
+        loop through the following until no passengers remain in system:
+        
+            call passenger.decision() for any passengers currently on board
+            call passenger.decision() for passengers waiting at station
+            call passenger.decision() for transferring passengers
+            call driver.decision() for all drivers on board vehicles
+            call driver.decision() for two drivers waiting at each station
+            move vehicles forward from current stop
+            call vehicle.decision() for all vehicles
+    */
     private void runSimulation() {
         
         // Acts as a loading message.
@@ -86,12 +105,24 @@ public class SFMTASimulation {
         printStationPeopleCount();
         printStationDriverCount();
         
-        // Now kick off the movement and action
         testProgram();
+        // Now kick off the movement and action:
         
-        //logic suggestions/ideas/brainstorming:
-        /* place one empty vehicle at each route's origin 
-        */
+        //  place one empty vehicle at each route's origin 
+        
+        //  call passenger.decision() for any passengers currently on board
+        
+        //  call passenger.decision() for passengers waiting at station
+        
+        //  call passenger.decision() for transferring passengers
+        
+        //  call driver.decision() for all drivers on board vehicles
+        
+        //  call driver.decision() for two drivers waiting at each station
+        
+        //  move vehicles forward from current stop
+        
+        //  call vehicle.decision() for all vehicles
         
         /* 
         
@@ -136,7 +167,7 @@ public class SFMTASimulation {
          next scan through a list of waiting transfer passengers, and call their
          decision() method
          
-         Now, for each DRIVER driving a vehicle, run their decision() method, which does all of the following:
+         Now, for each driver driving a vehicle, run their decision() method, which does all of the following:
          If  they're currently at an origin or terminus, then add one to their
          instance variable that stores how many trips they've made so far.
          then see if it is
