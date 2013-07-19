@@ -109,7 +109,7 @@ public class SFMTASimulation {
         printStationPeopleCount();
         printStationDriverCount();
         
-        testProgram();
+        //testProgram();
 
         // Now kick off the movement and action:
         
@@ -1834,6 +1834,14 @@ class LRV extends Vehicle {
     }
 }
 
+
+/**
+Person class is blueprint for creating passenger objects.
+This class ought to extend a class that MuniDriver also extends. 
+However, we have run out
+of time to do things just the way we want to (insert complaint here
+about complexity of assignment given short time to complete it).
+*/
 class Person {
 
     private int currentStationID;	//Store string retrieved from vehicle class
@@ -2244,6 +2252,8 @@ class Person {
 /**
 Driver class is a blueprint for creating objects to store driver data
 and run driver methods.
+This class ought to extend a class that Person (or Passenger) also extends.
+We're out of time. 
 */
 class MuniDriver { // note: Driver may be a java keyword, so used this
     // initialize instance variables
@@ -2275,6 +2285,11 @@ class MuniDriver { // note: Driver may be a java keyword, so used this
     }
     
     
+    public String getName(){
+        
+        return name;
+    }
+    
     public int getCurrentStationID(){
         
         return currentStationID;
@@ -2285,26 +2300,52 @@ class MuniDriver { // note: Driver may be a java keyword, so used this
         return currentVehicleID;
     }
     
-    public String getName(){
+    public int getTripNumber(){
         
-        return name;
+        return tripNumber;
     }
     
-    public void setCurrentStationID(int stationID){
+    public void setCurrentStationID(int s){
         
-        //Needs to access vehicle class, get station ("location") id.
-        currentStationID = stationID;
+        currentStationID = s;
     }
     
-    public void setCurrentVehicleID(int vehicleID){
-        //Needs to access vehicle class, get vehicle id.
-        currentVehicleID = vehicleID;
+    public void setCurrentVehicleID(int v){
+    
+        currentVehicleID = v;
+    }
+    
+    public void setTripNumber(int t) {
+        
+        tripNumber = t;
     }
     
     /**
     decision method
+    This instance of a muni driver analyzes the current state of affairs to 
+    see if he or she needs to do anything.
+         If  they're currently at an origin or terminus, then add one to their
+         instance variable that stores how many trips they've made so far.
+         then see if it is
+         their seventh trip. If so, remove them from their vehicle by
+         calling some vehicle method (removeDriver()?),
+         a  vehicle setter method to change the vehicle's instance variable 
+         operator to empty or some flag that means there is no driver 
+         then run queueDriver() for the station,
+         and change driver status/location to no vehicle ID
+         Note again that it is decision() that does all that, not the
+          controlling loop
+         
+         next for each driver waiting at a stop, run their decision() method,
+         which does all of the following:
+         if there is a driverless vehicle at the stop, get on board by calling
+         vehicle methods to set vehicle's operator instance variable,
+          call the station's popDriver(), and change
+         driver status/location to have that vehicle ID .
+         set driver trip number to 0
+
     */
     public void decision() {
         
     }
-}
+} // class Driver
