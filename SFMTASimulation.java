@@ -53,7 +53,7 @@ public class SFMTASimulation {
     
     // Creates arrays holding Person objects.
     private Person[] passengers = createPassengerArray("passengers.csv");
-    private Person[] drivers = createDriverArray("drivers.csv");
+    private MuniDriver[] drivers = createDriverArray("drivers.csv");
     
     // Instantiates an two-dimensional array holding the transfer stops.
     private String[][] transferStations = initializeTransferStops("TransferStops.csv");
@@ -117,14 +117,29 @@ public class SFMTASimulation {
         
         // while there are still passengers in system:
         while (!done) { 
-            //  call passenger.decision() for any passengers currently on board
             
+            //  call passenger.decision() for any passengers currently on board
+            for (int i=0; i<passengers.length; i++) {
+                if (passengers[i].getCurrentVehicleID() > 0) {
+                    passengers[i].decision();
+                }
+            }
             
             //  call passenger.decision() for passengers waiting at station
+            for (int i=0; i<passengers.length; i++) {
+                if (passengers[i].getCurrentVehicleID() == 0) {
+                    passengers[i].decision();
+                }
+            }
             
             //  call passenger.decision() for transferring passengers
             
             //  call driver.decision() for all drivers on board vehicles
+            for (int i=0; i<drivers.length; i++) {
+                if (drivers[i].getCurrentVehicleID() > 0) {
+                    drivers[i].decision();
+                }
+            }
             
             //  call driver.decision() for two drivers waiting at each station
             
@@ -133,9 +148,11 @@ public class SFMTASimulation {
             //  call vehicle.decision() for all vehicles
             
             // update loop control variable based upon current conditions:
-            // are all passengers at their destinations?
-            done = true;
-            System.out.println("NO OTHER OUTPUT");
+             
+            if (true) { // are all passengers at their destinations?
+                done = true;
+                System.out.println("NO OTHER OUTPUT");
+            }
         
         } // main control loop
         
@@ -873,15 +890,15 @@ public class SFMTASimulation {
     }
     
     /**
-     * The createDriverArray method creates an array of Person objects using
-     * information from the file.
+     * The createDriverArray method creates an array of MuniDriver objects 
+     * using information from the file.
      * @param fileNameDrivers The file containing a list of drivers.
-     * @return driver An array of Person objects.
+     * @return driver An array of MuniDriver objects.
      */
-    public static Person[] createDriverArray(String fileNameDrivers) {
-        //Creating driver : an Array of Person objects.
-        int totalNumPersonsDriver = getTotalNumPassengersOrDrivers(fileNameDrivers);	//Getting size of file; this will be size of array of Person objects.
-        Person[] driver = new Person[totalNumPersonsDriver];							//Creating Array of Person object with size.
+    public static MuniDriver[] createDriverArray(String fileNameDrivers) {
+        //Creating driver : an Array of MuniDriver objects.
+        int totalNumPersonsDriver = getTotalNumPassengersOrDrivers(fileNameDrivers);	//Getting size of file; this will be size of array of MuniDriver objects.
+        MuniDriver[] driver = new MuniDriver[totalNumPersonsDriver];							//Creating Array of MuniDriver object with size.
         
         try {
             Scanner inputFile = new Scanner(new File(fileNameDrivers));
@@ -891,14 +908,14 @@ public class SFMTASimulation {
                 String line = inputFile.nextLine();	//Stores line
                 String[] tokens = line.split(",");		//Splitting tokens with comma delimiter ","
                 
-                //Using the person constructor the initialize each index (each person) with corresponding name, and ID's.
-                driver[i] = new Person(tokens[0], Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), "Driver");
+                // Create new driver object
+                driver[i] = new MuniDriver(tokens[0], Integer.parseInt(tokens[1]));
             }
             
             inputFile.close();	//Close file when done.
             
         } catch (FileNotFoundException e) {
-            System.out.println("File not found.");
+            System.out.println("File " + fileNameDrivers + " not found.");
         }
         
         return driver;
@@ -1861,7 +1878,30 @@ class Person {
         createRoutePlan(); // Calls a method to fill routePlan with data
         
 	}
-	
+    
+    /**
+    decision method 
+    This instance analyzes the current state of affairs to see if it 
+    needs to do anything.
+    - Determine whether s/he has arrived at their next stop. That will
+            involve looking at their instance var that stores which
+            vehicle object they are in, and calling that vehicle's getStopID(),
+            to compare it to the passenger's itinerary
+       
+        +If so and it is the final destination, s/he should:
+         - call the vehicle's removePassenger method
+         - flag this passenger instance as having arrived at final destination
+        +If so and it is a transfer stop (from the passsenger's perspective, because it's not their final destination), passenger should:
+             - call the vehicle's removePassenger method
+             - update their status/location to the station (which may be a 
+               different station ID, from TransferStops.csv), rather than on
+                 board that vehicle
+             - call the station's queueTransfer method
+    */
+    public void decision() {
+        
+    }
+    
 	public boolean decisionGetOffVehicle(){
 		
 		boolean getOff = false;
@@ -2198,5 +2238,73 @@ class Person {
         
         // Incomplete: doesn't create a route plan for passengers who need to transfer between different routes.
     }
-}
+} // class Person
 
+
+/**
+Driver class is a blueprint for creating objects to store driver data
+and run driver methods.
+*/
+class MuniDriver { // note: Driver may be a java keyword, so used this
+    // initialize instance variables
+    private String name;
+    private int currentStationID; // 0 if not at station
+    private int currentVehicleID;   // 0 if not on board a vehicle
+    private int tripNumber; 
+    
+    
+    /**
+    no-arg constructor
+    */
+    public MuniDriver() {
+        name = "";
+        currentStationID = 0;
+        currentVehicleID = 0;
+        tripNumber = 0;
+    }
+    
+    
+    /**
+    two-arg constructor
+    */
+    public MuniDriver(String n, int s) {
+        name = n;
+        currentStationID = s;
+        currentVehicleID = 0;
+        tripNumber = 0;
+    }
+    
+    
+    public int getCurrentStationID(){
+        
+        return currentStationID;
+    }
+    
+    public int getCurrentVehicleID(){
+        
+        return currentVehicleID;
+    }
+    
+    public String getName(){
+        
+        return name;
+    }
+    
+    public void setCurrentStationID(int stationID){
+        
+        //Needs to access vehicle class, get station ("location") id.
+        currentStationID = stationID;
+    }
+    
+    public void setCurrentVehicleID(int vehicleID){
+        //Needs to access vehicle class, get vehicle id.
+        currentVehicleID = vehicleID;
+    }
+    
+    /**
+    decision method
+    */
+    public void decision() {
+        
+    }
+}
