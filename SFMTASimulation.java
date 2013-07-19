@@ -75,25 +75,28 @@ public class SFMTASimulation {
     }
     
     
-        /**
-        runSimulation() method creates all of the objects in the system,
-            moves the vehicles, and then calls object decision() methods
-            in which the objects update themselves based upon the new
-            positions of the vehicles. The algorithm is:
-            initialize objects
-            print text files for task 5
-            put a vehicle at each origin
-            loop through the following until no passengers remain in system:
-            
-                call passenger.decision() for any passengers currently on board
-                call passenger.decision() for passengers waiting at station
-                call passenger.decision() for transferring passengers
-                call driver.decision() for all drivers on board vehicles
-                call driver.decision() for two drivers waiting at each station
-                move vehicles forward from current stop
-                call vehicle.decision() for all vehicles
-        */
-        private void runSimulation() {
+    /**
+    runSimulation() method creates all of the objects in the system,
+        moves the vehicles, and then calls object decision() methods
+        in which the objects update themselves based upon the new
+        positions of the vehicles. The algorithm is:
+        initialize objects
+        print text files for task 5
+        put a vehicle at each origin
+        loop through the following until no passengers remain in system:
+        
+            call passenger.decision() for any passengers currently on board
+            call passenger.decision() for passengers waiting at station
+            call passenger.decision() for transferring passengers
+            call driver.decision() for all drivers on board vehicles
+            call driver.decision() for two drivers waiting at each station
+            move vehicles forward from current stop
+            call vehicle.decision() for all vehicles
+    */
+    private void runSimulation() {
+        
+        // declare method variables
+        boolean done = false; // loop control variable
         
         // Acts as a loading message.
         System.out.println("Initializing Simulation...");
@@ -113,9 +116,10 @@ public class SFMTASimulation {
         //  place one empty vehicle at each route's origin 
         
         // while there are still passengers in system:
-        while (passengersAL.size() > 0) { 
+        while (!done) { 
             
             //  call passenger.decision() for any passengers currently on board
+            
             
             //  call passenger.decision() for passengers waiting at station
             
@@ -158,11 +162,7 @@ public class SFMTASimulation {
              - call the station's queueTransfer method
              
           Next scan through a list of passengers that are queued at a 
-          station. This may be evidence that a station does need to keep track
-          of who is at it! Alternatively, scan through all passengers, and do
-          this only for those who are queued. Alternatively yet, we could use 
-          two high-scope arrays, one for queued passengers, one for boarded
-          ones. No matter how we find the queued passengers:
+          station:
           
           Call his/her decision method, which should:
            = Determine whether a bus they want is at the station AND
