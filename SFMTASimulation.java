@@ -1965,6 +1965,7 @@ class Person {
             if(i < 49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
+                }
             }
             if(i < LTaravalRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
@@ -1980,7 +1981,7 @@ class Person {
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("KT")[i][1])) {
                    stopVehicle.add("KT");
                 }
-            }    
+            }   
         }
         for (int i = 0; i < SFMTASimulation.getRouteInfo("47").length; i++) {
             if (startID == Integer.parseInt(SFMTASimulation.getRouteInfo("47")[i][1])) {
@@ -2003,6 +2004,7 @@ class Person {
             if(i < 49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
+                }
             }
             if(i < LTaravalRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
@@ -2041,6 +2043,7 @@ class Person {
             if(i < 49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
+                }
             }
             if(i < LTaravalRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
@@ -2079,6 +2082,7 @@ class Person {
             if(i < 49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
+                }
             }
             if(i < LTaravalRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
@@ -2117,6 +2121,7 @@ class Person {
             if(i < 49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
+                }
             }
             if(i < LTaravalRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
@@ -2155,6 +2160,7 @@ class Person {
             if(i < 49MissionRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("49")[i][1])) {
                     stopVehicle.add("49");
+                }
             }
             if(i < LTaravalRoute[0].length){
                 if (stopID == Integer.parseInt(SFMTASimulation.getRouteInfo("L")[i][1])) {
