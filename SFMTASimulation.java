@@ -109,13 +109,15 @@ public class SFMTASimulation {
         printStationPeopleCount();
         printStationDriverCount();
         
-        //testProgram();
+        //testProgram(); // don't run this in final version
 
-        // Now kick off the movement and action:
+        /* Now kick off the movement and action:   */
         
         //  place one empty vehicle at each route's origin 
-        
+        //insert code here!
+          
         // while there are still passengers in system:
+        System.out.println("About to enter main control loop");
         while (!done) { 
             
             //  call passenger.decision() for any passengers currently on board
@@ -133,6 +135,7 @@ public class SFMTASimulation {
             }
             
             //  call passenger.decision() for transferring passengers
+            //insert code here!
             
             //  call driver.decision() for all drivers on board vehicles
             for (int i=0; i<drivers.length; i++) {
@@ -142,12 +145,16 @@ public class SFMTASimulation {
             }
             
             //  call driver.decision() for two drivers waiting at each station
+            //insert code here!
             
             //  move vehicles forward from current stop
+            //insert code here!
             
             //  call vehicle.decision() for all vehicles
+            //insert code here!
             
             // update loop control variable based upon current conditions:
+            //insert code here!
              
             if (true) { // are all passengers at their destinations?
                 done = true;
@@ -157,6 +164,7 @@ public class SFMTASimulation {
         } // main control loop
         
         // print any output files here if that hasn't already been done
+        //insert code here!
         
         //  end of method runSimulation
         
@@ -1525,7 +1533,7 @@ class Vehicle {
     private int stopID;             // The stop ID of where the vehicle is currently located
     private int stopIndex;          // Counter to keep track of stops made
     private Direction vehicleDir;   // Direction of the vehicle
-    private String[][] routeList;            // List of stations where the vehicle stops
+    private String[][] routeList;   // List of stations where the vehicle stops
     
     private int numOfCoaches;   // Number of coaches for a vehicle
     private int maxCapacity;    // Maximum number of passengers a vehicle can hold
@@ -1533,7 +1541,7 @@ class Vehicle {
     private int passengerCount;
     private boolean full;
     private ArrayList<Person> passengerList; // List of passenger aboard the vehicle
-    private Person operator;                 // The driver operating the vehicle.
+    private boolean hasDriver;        // The driver operating the vehicle.
     
     /**
      * No-Arg Constructor
@@ -1551,7 +1559,7 @@ class Vehicle {
         passengerCount = 0;
         full = false;
         passengerList = null;
-        operator = null;
+        hasDriver = false;
     }
     
     /**
@@ -1571,7 +1579,7 @@ class Vehicle {
         passengerCount = 0;
         full = false;
         passengerList = new ArrayList<Person>(maxCapacity);
-        operator = null; // Needs to be changed to an actual driver later.
+        hasDriver = false; // Needs to be changed to an actual driver later.
     }
     
     /**
@@ -1664,6 +1672,19 @@ class Vehicle {
         return list;
     }*/
     
+    /**
+    getHasDriver hasDriver getter method
+    */
+    public boolean getHasDriver() {
+        return hasDriver;
+    }
+    
+    /**
+    setHasDriver hasDriver setter method
+    */
+    public void setHasDriver(boolean h) {
+        hasDriver = h;
+    }
     
     /**
      * The addPassenger methods adds a passenger to the vehicle.
@@ -2346,6 +2367,16 @@ class MuniDriver { // note: Driver may be a java keyword, so used this
 
     */
     public void decision() {
-        
+        /* this is all a work in progress; code to above specification
+        // am I at an origin or terminus?
+        if (stations.get(findInArray(currentStationID)).getIsOriginOrTerminus()) {
+            tripNumber += 1; // I just completed a trip!
+            
+            if (tripNumber >= 7) {
+                vehicle.setHasDriver(false); 
+                currentVehicleID = 0;
+            }
+        }
+        */
     }
 } // class Driver
