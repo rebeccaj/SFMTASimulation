@@ -1,7 +1,7 @@
 /** 
 SFMTASimulation.java
-CS 111B
-Due: Wednesday, July 17, 2013, 11:55 PM
+CS 111B  Programming Fundamentals: Java
+Due: Thursday, July 18, 2013, 11:55 PM
 Group E: Teddy Deng, Katherine Soohoo, Rebecca A. Johnson
 We assume the csv data files are in the same directory as this file.
 */
@@ -33,7 +33,7 @@ public class SFMTASimulation {
     
     // The purpose of this list is to keep track of passengers in the program.
     // When a passenger has reached their position, they are removed to the list.
-    private ArrayList<Person> passengersAL = createPassengerArrayList("passengers.csv"); // or two: drivers and passengers?
+    private ArrayList<Person> passengersAL = createPassengerArrayList("passengers.csv"); 
     
     // Creates two-dimensional string arrays for all 7 routes.
     private static String[][] v8xBayshoreRoute = createRouteArray("8xBayshore.csv");
@@ -98,7 +98,7 @@ public class SFMTASimulation {
         // Acts as a loading message.
         System.out.println("Initializing Simulation...");
         
-        // initialize ArrayLists of objects 
+        // initialize ArrayLists of station and vehicles objects 
         initializeStations();
         initializeVehicles();
                 
@@ -113,7 +113,7 @@ public class SFMTASimulation {
         
         // while there are still passengers in system:
         while (passengersAL.size() > 0) { 
-        
+            
             //  call passenger.decision() for any passengers currently on board
             
             //  call passenger.decision() for passengers waiting at station
