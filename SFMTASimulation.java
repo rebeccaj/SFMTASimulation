@@ -98,6 +98,7 @@ public class SFMTASimulation {
         // Acts as a loading message.
         System.out.println("Initializing Simulation...");
         
+        // initialize ArrayLists of objects 
         initializeStations();
         initializeVehicles();
                 
@@ -110,30 +111,34 @@ public class SFMTASimulation {
         
         //  place one empty vehicle at each route's origin 
         
-        //  call passenger.decision() for any passengers currently on board
+        // while there are still passengers in system:
+        while (passengersAL.size() > 0) { 
         
-        //  call passenger.decision() for passengers waiting at station
+            //  call passenger.decision() for any passengers currently on board
+            
+            //  call passenger.decision() for passengers waiting at station
+            
+            //  call passenger.decision() for transferring passengers
+            
+            //  call driver.decision() for all drivers on board vehicles
+            
+            //  call driver.decision() for two drivers waiting at each station
+            
+            //  move vehicles forward from current stop
+            
+            //  call vehicle.decision() for all vehicles
         
-        //  call passenger.decision() for transferring passengers
+        } // main control loop
         
-        //  call driver.decision() for all drivers on board vehicles
+        // print any output files here if that hasn't already been done
         
-        //  call driver.decision() for two drivers waiting at each station
-        
-        //  move vehicles forward from current stop
-        
-        //  call vehicle.decision() for all vehicles
+        //  end of method runSimulation
         
         /* 
+        These comments explain in detail what the decision methods called
+        above should do:
         
-        
-        For each vehicle, scan through the list of all passengers that are
-           on board that vehicle (I noticed you are storing that info
-           inside the vehicle instance)
-           alternatively, if we don't want a vehicle to keep track of who
-           is on board, scan through all passengers, and for each of those
-           who is on board a vehicle, 
-           call the passenger's decision method, which:
+        call the passenger's decision method, which:
            = Determines whether s/he has arrived at their next stop. That will
             probably involve looking at their instance var that stores which
             vehicle object they are in, and calling that vehicle's getStopID(),
